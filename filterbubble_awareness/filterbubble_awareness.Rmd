@@ -7,24 +7,68 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(haven)
+library(sjlabelled)
 ```
 
-## R Markdown
+# Data Cleaning
+First we clean our SPSS output files. For this purpose we remove identifying information..
+```{r data-cleaning}
+raw <- read_sav("data/raw.sav")
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# rename variables ---- 
+codebook_filename <- "codebook.csv"
 
-```{r cars}
-summary(cars)
+if(!file.exists(codebook_filename)){
+  variable_names <- names(raw)
+  label_names <- get_label(raw)
+
+  codebook <- data.frame(variable_names, label_names)
+  print("test")
+  write_delim(codebook, path = codebook_filename, delim = ";")
+} else {
+  codebook <-read_delim(codebook_filename, delim=";")
+}
+
+  # Change variable labels to those from the codebook.csv
+  names(raw) <- codebook$variable_names
+  
+
+# select required variables ----
+  raw[,c(-1:-10)] %>% select(-starts_with("p0")) -> cleaned_data
+  
+  cleaned_data
+  
+  
+  # factors and ordinal data
+  
+  # filter incomplete responses
+  
+  # calculate factors and scales
+  
+  
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+
+
+
+# Heading 1
+Text  *Kursiv* **BOld**
+
+## Heading 2
+
+### Heading 3
+
+
+
+
+

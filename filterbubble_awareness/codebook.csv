@@ -1,0 +1,83 @@
+variable_names;label_names
+CollectorNm;CollectorNm
+respondent_id;respondent_id
+collector_id;collector_id
+date_created;date_created
+date_modified;date_modified
+ip_address;ip_address
+email_address;email_address
+first_name;first_name
+last_name;last_name
+custom_1;custom_1
+age;Bitte geben Sie Ihr Alter in Jahren an.
+gender;Bitte geben Sie Ihr Geschlecht an.
+education;Bitte geben Sie Ihren höchsten Bildungsabschluss an:
+job;Bitte geben Sie die Tätigkeit an, der Sie im Moment nachgehen:
+last_job;Meine letzte berufliche Tätigkeit bzw. Ausbildung war in einem:
+big5_01;Ich bin eher zurückhaltend, reserviert.
+big5_02;Ich schenke anderen leicht Vertrauen, glaube an das Gute im Menschen.
+big5_03;Ich bin bequem, neige zur Faulheit.
+big5_04;Ich bin entspannt, lasse mich durch Stress nicht aus der Ruhe bringen.
+big5_05;Ich habe künstlerisches Interesse.
+big5_06;Ich gehe aus mir heraus, bin gesellig.
+big5_07;Ich neige dazu, andere zu kritisieren.
+big5_08;Ich erledige Aufgaben gründlich.
+big5_09;Ich werde leicht nervös und unsicher.
+big5_10;Ich habe eine aktive Vorstellungskraft, bin fantasievoll.
+facebook_usage;Ich benutze Facebook...
+fb_smartphone;Smartphone
+fb_laptop;Laptop
+fc_tablet;Tablet
+fb_pc;Desktop PC
+fb_um_friends;Ich nutze Facebook hauptsächlich, um mit meinen Freunden in Kontakt zu bleiben.
+fb_um_newfriends;Ich nutze Facebook, um neue Leute kennenzulernen.
+fb_um_job;Ich nutze Facebook für berufliche Zwecke.
+q0009_0004;Ich nutze Facebook, um mich über politische und/oder gesellschaftliche Themen zu informieren.
+q0009_0005;Ich nutze Facebook, um andere über politische und/oder gesellschaftliche Themen zu informieren.
+q0009_0006;Ich nutze Facebook, um meine Meinung zu politischen und/oder gesellschaftlichen Themen zu äußern.
+q0009_0007;Ich teile gerne und häufig Beiträge, die ich interessant finde.
+q0009_0008;Ich poste auf Facebook gerne Dinge aus meinem Leben.
+q0010_0001;posten Sie etwas auf Ihre Pinnwand?
+q0010_0002;senden Sie eine private Nachricht an einen Facebook-Freund?
+q0010_0003;besuchen Sie das Profil anderer Facebook-Nutzer?
+q0010_0004;besuchen Sie öffentliche Seiten auf Facebook?
+q0011;Wie viele Facebook-Kontakte haben Sie ungefähr?
+q0012;Wie viele Seiten haben Sie ungefähr geliked?
+q0013;In wie vielen Facebook-Gruppen sind Sie?
+q0014_0001;
+q0015_0001;
+q0016_0001;
+q0017_0001;
+q0018_0001;
+q0019_0001;
+q0020_0001;Beiträge, die von meinen guten Freunden geliked wurden, like ich auch.
+q0020_0002;Beiträge, die von meinen guten Freunden geliked wurden, spiegeln meine Meinung wieder.
+q0020_0003;Beiträge, die von meinen übrigen Freunden geliked wurden, like ich auch.
+q0020_0004;Beiträge, die von meinen guten Freunden geliked wurden, klicke ich an.
+q0020_0005;Beiträge, die von meinen guten Freunden geteilt wurden, klicke ich an.
+q0020_0006;Beiträge, die von meinen guten Freunden geteilt wurden, teile ich auch.
+q0020_0007;Ich achte nicht darauf, wer die angezeigten Beiträge geliked oder geteilt hat.
+q0020_0008;Beiträge, die meine Meinung widerspiegeln, like ich.
+q0020_0009;Ich like auch Beiträge, die ich nicht vollständig gelesen habe.
+q0020_0010;Ich like auch Beiträge, die ich nicht angeklickt habe.
+q0021_0001;Ich habe schon vorher von der Theorie der Filterblase gehört.
+q0021_0002;Ich glaube, dass die Filterblase existiert.
+q0021_0003;Die Filterblase betrifft mich persönlich.
+q0021_0004;Die Filterblase ist ein Problem.
+q0021_0005;Die Filterblase sorgt dafür, dass mir nur interessante Beiträge angezeigt werden.
+q0021_0006;Ich gehe bewusst gegen die Filterblase vor.
+q0022_0001;Ich lösche den Verlauf des Browsers und meine Cookies.
+q0022_0002;Ich verwende die Incognito-Funktion.
+q0022_0003;Ich klicke und like viele verschiedene Beiträge, um Vielfalt zu erzwingen.
+q0022_0004;Ich benutze den “Explore”-Button bei Facebook, der mir verschiedene News anzeigt.
+q0022_0005;Ich deabonniere einige meiner Freunde/Seiten.
+q0023_0001;
+q0024_0001;
+q0025;Vielen Dank für Ihre Teilnahme!Haben Sie Anmerkungen zur Umfrage? Teilen Sie uns diese gern mit.
+p0001;Page 1
+p0002;Page 2
+p0003;Page 3
+p0004;Page 4
+p0005;Page 5
+p0006;Page 6
+p0007;Page 7
