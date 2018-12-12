@@ -14,7 +14,7 @@ library(sjlabelled)
 
 First we clean our SPSS output files. For this purpose we remove identifying information..
 ```{r data-cleaning}
-raw <- read_sav("data/raw.sav")
+raw <- read_sav("data/SpiralofSilence_raw.sav")
 
 
 # rename variables ---- 
@@ -42,6 +42,9 @@ if(!file.exists(codebook_filename)){
   
   
   # factors and ordinal data
+  
+  
+  
   
   # filter incomplete responses
   
