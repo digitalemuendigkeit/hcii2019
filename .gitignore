@@ -39,3 +39,6 @@ rsconnect/
 
 # Do not share raw data
 *.sav
+
+# Do not share generated files
+*.html
