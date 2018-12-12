@@ -42,3 +42,6 @@ rsconnect/
 
 # Do not share generated files
 *.html
+
+# Apple nervt
+.DS_Store
