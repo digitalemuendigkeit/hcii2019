@@ -34,21 +34,49 @@ if(!file.exists(codebook_filename)){
   # Change variable labels to those from the codebook.csv
   names(raw) <- codebook$variable_names
   
+  names(raw)
+  
 
 # select required variables ----
-  raw[,c(-1:-10)] %>% select(-starts_with("p0")) -> cleaned_data
+  raw[,c(-1:-10)] -> c_df
   
-  cleaned_data
-  
-  
+  c_df
   # factors and ordinal data
+  c_df$Age <- as.numeric(c_df$Age)
+  c_df$Gender
   
   
+  # Function to convert factor variabls from surveymonkey spss file to usable factors
+  convert_to_factor <- function(x, ordered = T, rev = F) {
+      result <- factor(x, labels = get_labels(x), 
+                       levels = 1:length(get_labels(x)), ordered = ordered )
+      if(rev) {
+        result <- fct_rev(result)
+      }
+      result
+  }
+  
+  
+  c_df <- c_df %>% mutate_at(vars(starts_with("big5")), convert_to_factor, rev = T )
+  c_df <- c_df %>% mutate_at(vars(starts_with("fb_")), convert_to_factor, rev = T )  
   
   
   # filter incomplete responses
   
+  codebook[22:27,]$label_names
+  
   # calculate factors and scales
   
+  key_list <- list(b5_o = list("big5_01", "big5_02"),
+                   b5_e = list("-big5_03", "big5_04"),
+                   b5_n = list("big5_05", "-big5_06"))
+  
+  scores <- psych::scoreItems(key_list, c_df, min = 1, max = 6, impute = "mean")  
+  
+  scores
+  
+  c_df <- c_df %>% cbind(scores$scores) 
+  
+  c_df %>% select(-starts_with("big5"))
   
 ```

@@ -9,33 +9,33 @@ email_address;email_address
 first_name;first_name
 last_name;last_name
 custom_1;custom_1
-q0001;Bitte geben Sie Ihr Geschlecht an:
-q0002;Bitte geben Sie Ihr Alter an:
-q0003_0001;Ich benutze aktiv folgende Social Media-Dienste:
-q0003_0002;Ich benutze aktiv folgende Social Media-Dienste:
-q0003_0003;Ich benutze aktiv folgende Social Media-Dienste:
-q0003_0004;Ich benutze aktiv folgende Social Media-Dienste:
-q0003_0005;Ich benutze aktiv folgende Social Media-Dienste:
-q0003_0006;Ich benutze aktiv folgende Social Media-Dienste:
-q0003_other;Sonstiges (bitte angeben)
-q0004_0001;
-q0004_other;Sonstiges (bitte angeben)
-q0005_0001;Ich habe eine aktive Vorstellungskraft, bin fantasievoll.
-q0005_0002;Ich habe großes künstlerisches Interesse.
-q0006_0001;Ich bin eher zurückhaltend, reserviert.
-q0006_0002;Ich gehe aus mir heraus, bin gesellig.
-q0007_0001;Ich bin entspannt, lasse mich durch Stress nicht aus der Ruhe bringen.
-q0007_0002;Ich werde leicht nervös und unsicher.
-q0008;https://sites.google.com/site/schweigespirale123/_/rsrc/1512473554282/home/thema-1-toiletten/Toi_H_1.png
-q0009;https://sites.google.com/site/schweigespirale123/_/rsrc/1512505984310/home/thema-2-lebensmittel/thema-3-ronaldo/thema-4-rauchmelder/Leben_H_3.png
-q0010;https://sites.google.com/site/schweigespirale123/_/rsrc/1512495186350/home/thema-2-lebensmittel/thema-3-ronaldo/Ronaldo_H_3.png
-q0011;https://sites.google.com/site/schweigespirale123/_/rsrc/1512475086611/home/thema-2-lebensmittel/Rauch_H_1.png
-q0012;https://sites.google.com/site/schweigespirale123/_/rsrc/1512473810508/home/thema-1-toiletten/Toi_H_2.png
-q0013;https://sites.google.com/site/schweigespirale123/_/rsrc/1512473939024/home/thema-1-toiletten/Toi_H_3.png
-q0014;https://sites.google.com/site/schweigespirale123/_/rsrc/1512506062834/home/thema-2-lebensmittel/thema-3-ronaldo/thema-4-rauchmelder/Leben_H_1.png
-q0015;https://sites.google.com/site/schweigespirale123/_/rsrc/1512506154661/home/thema-2-lebensmittel/thema-3-ronaldo/thema-4-rauchmelder/Leben_H_2.png
-q0016;https://sites.google.com/site/schweigespirale123/_/rsrc/1512495240511/home/thema-2-lebensmittel/thema-3-ronaldo/Ronaldo_H_1.png
-q0017;https://sites.google.com/site/schweigespirale123/_/rsrc/1512495327690/home/thema-2-lebensmittel/thema-3-ronaldo/Ronaldo_H_2.png
-q0018;https://sites.google.com/site/schweigespirale123/_/rsrc/1512475128509/home/thema-2-lebensmittel/Rauch_H_2.png
-q0019;https://sites.google.com/site/schweigespirale123/_/rsrc/1512475218718/home/thema-2-lebensmittel/Rauch_H_3.png
-q0020;Haben Sie anschließend noch Fragen oder Anmerkungen zu dieser Umfrage?
+Gender;Bitte geben Sie Ihr Geschlecht an:
+Age;Bitte geben Sie Ihr Alter an:
+ActiveUsage_Facebook;Ich benutze aktiv folgende Social Media-Dienste:
+ActiveUsage_Twitter;Ich benutze aktiv folgende Social Media-Dienste:
+ActiveUsage_Instagram;Ich benutze aktiv folgende Social Media-Dienste:
+ActiveUsage_GooglePlus;Ich benutze aktiv folgende Social Media-Dienste:
+ActiveUsage_Snapchat;Ich benutze aktiv folgende Social Media-Dienste:
+ActiveUsage_Youtube;Ich benutze aktiv folgende Social Media-Dienste:
+ActiveUsage_Other;Sonstiges (bitte angeben)
+FrequencyOfSMUse;
+FrequencyOfSMUse_Other;Sonstiges (bitte angeben)
+big5_01;Ich habe eine aktive Vorstellungskraft, bin fantasievoll.
+big5_02;Ich habe großes künstlerisches Interesse.
+big5_03;Ich bin eher zurückhaltend, reserviert.
+big5_04;Ich gehe aus mir heraus, bin gesellig.
+big5_05;Ich bin entspannt, lasse mich durch Stress nicht aus der Ruhe bringen.
+big5_06;Ich werde leicht nervös und unsicher.
+topToilets1;https://sites.google.com/site/schweigespirale123/_/rsrc/1512473554282/home/thema-1-toiletten/Toi_H_1.png
+topFood3;https://sites.google.com/site/schweigespirale123/_/rsrc/1512505984310/home/thema-2-lebensmittel/thema-3-ronaldo/thema-4-rauchmelder/Leben_H_3.png
+topRonaldo3;https://sites.google.com/site/schweigespirale123/_/rsrc/1512495186350/home/thema-2-lebensmittel/thema-3-ronaldo/Ronaldo_H_3.png
+topSmokedet1;https://sites.google.com/site/schweigespirale123/_/rsrc/1512475086611/home/thema-2-lebensmittel/Rauch_H_1.png
+topToilets2;https://sites.google.com/site/schweigespirale123/_/rsrc/1512473810508/home/thema-1-toiletten/Toi_H_2.png
+topToilets3;https://sites.google.com/site/schweigespirale123/_/rsrc/1512473939024/home/thema-1-toiletten/Toi_H_3.png
+topFood1;https://sites.google.com/site/schweigespirale123/_/rsrc/1512506062834/home/thema-2-lebensmittel/thema-3-ronaldo/thema-4-rauchmelder/Leben_H_1.png
+topFood2;https://sites.google.com/site/schweigespirale123/_/rsrc/1512506154661/home/thema-2-lebensmittel/thema-3-ronaldo/thema-4-rauchmelder/Leben_H_2.png
+topRonaldo1;https://sites.google.com/site/schweigespirale123/_/rsrc/1512495240511/home/thema-2-lebensmittel/thema-3-ronaldo/Ronaldo_H_1.png
+topRonaldo2;https://sites.google.com/site/schweigespirale123/_/rsrc/1512495327690/home/thema-2-lebensmittel/thema-3-ronaldo/Ronaldo_H_2.png
+topSmokedet2;https://sites.google.com/site/schweigespirale123/_/rsrc/1512475128509/home/thema-2-lebensmittel/Rauch_H_2.png
+topSmokedet3;https://sites.google.com/site/schweigespirale123/_/rsrc/1512475218718/home/thema-2-lebensmittel/Rauch_H_3.png
+FinalRemarks;Haben Sie anschließend noch Fragen oder Anmerkungen zu dieser Umfrage?
