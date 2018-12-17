@@ -124,16 +124,8 @@ mean(c_df$FB)
 
 ### Action against filter bubble 
 
-mean(FBV_L√∂schen)
-mean(FBV_Incognito)
-mean(FBV_Vielfalt_erzwingen)
-mean(FBV_Explorer)
-mean(FBV_deabonnieren)
-
 ### wishes regarding facebook
 
-mean(FB_Wunsch_Werkzeug)
-mean(FB_Wunsch_Newsfeed)
 
 
 ## correlations
