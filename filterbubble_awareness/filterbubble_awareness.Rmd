@@ -64,7 +64,7 @@ if(!file.exists(codebook_filename)){
   
   
   c_df <- c_df %>% mutate_at(vars(starts_with("big5")), convert_to_factor, rev = T )
-  c_df <- c_df %>% mutate_at(vars(starts_with("fb_")), convert_to_factor, rev = T )
+  c_df <- c_df %>% mutate_at(vars(starts_with("FB_")), convert_to_factor, rev = T )
 
   # filter incomplete responses
   # c_df %>% filter(rowSums(is.na(c_df)) < 5)
@@ -73,21 +73,69 @@ if(!file.exists(codebook_filename)){
   codebook[16:25,]$label_names
   # calculate factors and scales
   
-  key_list <- list(b5_n = list("-big5_04", "big5_09"),
-                   b5_e = list("-big5_01", "big5_06")) 
+  key_list_big5 <- list(b5_n = list("-big5_04", "big5_09"),
+                   b5_e = list("-big5_01", "big5_06"),
+                   b5_o = list("big5_05", "big5_10"),
+                   b5_a = list("big5_02", "-big5_07"),
+                   b5_c = list("-big5_03", "big5_08"))
 
-  scores <- psych::scoreItems(key_list, c_df, min = 1, max = 6, impute = "mean")  
+  scores <- psych::scoreItems(key_list_big5, c_df, min = 1, max = 6, impute = "mean")  
   scores
   c_df <- c_df %>% cbind(scores$scores) 
   
   c_df %>% select(-starts_with("big5"))
   
+  key_list_FB <- list(FB = list("FB_schon_gehört", "FB_glaube_existiert", "FB_betrifft_persönlich", "FB_Problem", "FB_interessante_Beiträge", "FB_bewusstes_Vorgehen"))
   
-  hypo_1 <- t.test(b5_n ~gender, data= c_df)
+  scores <- psych::scoreItems(key_list_FB, c_df, min = 1, max = 6, impute = "mean")  
+  scores
+  c_df <- c_df %>% cbind(scores$scores) 
+  
+  c_df %>% select(-starts_with("FB_"))
 
-  apastats::describe.ttest(hypo_1, type="latex")  
 ```
 
+# analysis
+Here we compute the results
+```{r analysis}
+knitr::opts_chunk$set(echo = TRUE)
+
+## means
+### age
+
+mean(c_df$age)
+
+### big 5 
+
+mean(c_df$b5_n)
+mean(c_df$b5_e)
+mean(c_df$b5_o)
+mean(c_df$b5_a)
+mean(c_df$b5_c)
+
+### fbg
+
+
+## correlations
+
+### 1
+
+<> cor.test(age, FB_schon_gehört,method = "pearson")
+
+  hypo_1a <- t.test(b5_n ~gender, data= c_df)
+  hypo_1b <- t.test(b5_e ~gender, data= c_df)
+  hypo_1c <- t.test(b5_o ~gender, data= c_df)
+  hypo_1d <- t.test(b5_a ~gender, data= c_df)
+  hypo_1e <- t.test(b5_c ~gender, data= c_df)
+
+  apastats::describe.ttest(hypo_1a, type="latex")
+  apastats::describe.ttest(hypo_1b, type="latex")
+  apastats::describe.ttest(hypo_1c, type="latex")  
+  apastats::describe.ttest(hypo_1d, type="latex")  
+  apastats::describe.ttest(hypo_1e, type="latex")  
+  
+
+```
 
 
 
