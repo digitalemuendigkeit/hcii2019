@@ -36,6 +36,7 @@ if(!file.exists(codebook_filename)){
   # Change variable labels to those from the codebook.csv
   names(raw) <- codebook$variable_names
   
+  names(raw)
 
 # select required variables ----
   raw[,c(-1:-10)] %>% select(-starts_with("p0")) -> c_df
@@ -80,7 +81,9 @@ if(!file.exists(codebook_filename)){
                    b5_c = list("-big5_03", "big5_08"))
 
   scores <- psych::scoreItems(key_list_big5, c_df, min = 1, max = 6, impute = "mean")  
+  
   scores
+  
   c_df <- c_df %>% cbind(scores$scores) 
   
   c_df %>% select(-starts_with("big5"))
@@ -88,7 +91,9 @@ if(!file.exists(codebook_filename)){
   key_list_FB <- list(FB = list("FB_schon_gehört", "FB_glaube_existiert", "FB_betrifft_persönlich", "FB_Problem", "FB_interessante_Beiträge", "FB_bewusstes_Vorgehen"))
   
   scores <- psych::scoreItems(key_list_FB, c_df, min = 1, max = 6, impute = "mean")  
+  
   scores
+  
   c_df <- c_df %>% cbind(scores$scores) 
   
   c_df %>% select(-starts_with("FB_"))
@@ -113,14 +118,28 @@ mean(c_df$b5_o)
 mean(c_df$b5_a)
 mean(c_df$b5_c)
 
-### fbg
+### FB
+
+mean(c_df$FB)
+
+### Action against filter bubble 
+
+mean(FBV_L√∂schen)
+mean(FBV_Incognito)
+mean(FBV_Vielfalt_erzwingen)
+mean(FBV_Explorer)
+mean(FBV_deabonnieren)
+
+### wishes regarding facebook
+
+mean(FB_Wunsch_Werkzeug)
+mean(FB_Wunsch_Newsfeed)
 
 
 ## correlations
 
 ### 1
 
-<> cor.test(age, FB_schon_gehört,method = "pearson")
 
   hypo_1a <- t.test(b5_n ~gender, data= c_df)
   hypo_1b <- t.test(b5_e ~gender, data= c_df)
