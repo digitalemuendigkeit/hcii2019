@@ -41,11 +41,6 @@ if(!file.exists(codebook_filename)){
   raw[,c(-1:-10)] %>% select(-starts_with("p0")) -> c_df
   
   
-  ## Temporary filter remove for full analysis
-  c_df <- c_df[,1:23]
-  
- 
-  
   
 # factors and ordinal data
   

@@ -1,83 +1,83 @@
-variable_names;label_names
-CollectorNm;CollectorNm
-respondent_id;respondent_id
-collector_id;collector_id
-date_created;date_created
-date_modified;date_modified
-ip_address;ip_address
-email_address;email_address
-first_name;first_name
-last_name;last_name
-custom_1;custom_1
-age;Bitte geben Sie Ihr Alter in Jahren an.
-gender;Bitte geben Sie Ihr Geschlecht an.
-education;Bitte geben Sie Ihren h√∂chsten Bildungsabschluss an:
-job;Bitte geben Sie die T√§tigkeit an, der Sie im Moment nachgehen:
-last_job;Meine letzte berufliche T√§tigkeit bzw. Ausbildung war in einem:
-big5_01;Ich bin eher zur√ºckhaltend, reserviert.
-big5_02;Ich schenke anderen leicht Vertrauen, glaube an das Gute im Menschen.
-big5_03;Ich bin bequem, neige zur Faulheit.
-big5_04;Ich bin entspannt, lasse mich durch Stress nicht aus der Ruhe bringen.
-big5_05;Ich habe k√ºnstlerisches Interesse.
-big5_06;Ich gehe aus mir heraus, bin gesellig.
-big5_07;Ich neige dazu, andere zu kritisieren.
-big5_08;Ich erledige Aufgaben gr√ºndlich.
-big5_09;Ich werde leicht nerv√∂s und unsicher.
-big5_10;Ich habe eine aktive Vorstellungskraft, bin fantasievoll.
-facebook_usage;Ich benutze Facebook...
-fb_smartphone;Smartphone
-fb_laptop;Laptop
-fc_tablet;Tablet
-fb_pc;Desktop PC
-fb_um_friends;Ich nutze Facebook haupts√§chlich, um mit meinen Freunden in Kontakt zu bleiben.
-fb_um_newfriends;Ich nutze Facebook, um neue Leute kennenzulernen.
-fb_um_job;Ich nutze Facebook f√ºr berufliche Zwecke.
-q0009_0004;Ich nutze Facebook, um mich √ºber politische und/oder gesellschaftliche Themen zu informieren.
-q0009_0005;Ich nutze Facebook, um andere √ºber politische und/oder gesellschaftliche Themen zu informieren.
-q0009_0006;Ich nutze Facebook, um meine Meinung zu politischen und/oder gesellschaftlichen Themen zu √§u√üern.
-q0009_0007;Ich teile gerne und h√§ufig Beitr√§ge, die ich interessant finde.
-q0009_0008;Ich poste auf Facebook gerne Dinge aus meinem Leben.
-q0010_0001;posten Sie etwas auf Ihre Pinnwand?
-q0010_0002;senden Sie eine private Nachricht an einen Facebook-Freund?
-q0010_0003;besuchen Sie das Profil anderer Facebook-Nutzer?
-q0010_0004;besuchen Sie √∂ffentliche Seiten auf Facebook?
-q0011;Wie viele Facebook-Kontakte haben Sie ungef√§hr?
-q0012;Wie viele Seiten haben Sie ungef√§hr geliked?
-q0013;In wie vielen Facebook-Gruppen sind Sie?
-q0014_0001;
-q0015_0001;
-q0016_0001;
-q0017_0001;
-q0018_0001;
-q0019_0001;
-q0020_0001;Beitr√§ge, die von meinen guten Freunden geliked wurden, like ich auch.
-q0020_0002;Beitr√§ge, die von meinen guten Freunden geliked wurden, spiegeln meine Meinung wieder.
-q0020_0003;Beitr√§ge, die von meinen √ºbrigen Freunden geliked wurden, like ich auch.
-q0020_0004;Beitr√§ge, die von meinen guten Freunden geliked wurden, klicke ich an.
-q0020_0005;Beitr√§ge, die von meinen guten Freunden geteilt wurden, klicke ich an.
-q0020_0006;Beitr√§ge, die von meinen guten Freunden geteilt wurden, teile ich auch.
-q0020_0007;Ich achte nicht darauf, wer die angezeigten Beitr√§ge geliked oder geteilt hat.
-q0020_0008;Beitr√§ge, die meine Meinung widerspiegeln, like ich.
-q0020_0009;Ich like auch Beitr√§ge, die ich nicht vollst√§ndig gelesen habe.
-q0020_0010;Ich like auch Beitr√§ge, die ich nicht angeklickt habe.
-q0021_0001;Ich habe schon vorher von der Theorie der Filterblase geh√∂rt.
-q0021_0002;Ich glaube, dass die Filterblase existiert.
-q0021_0003;Die Filterblase betrifft mich pers√∂nlich.
-q0021_0004;Die Filterblase ist ein Problem.
-q0021_0005;Die Filterblase sorgt daf√ºr, dass mir nur interessante Beitr√§ge angezeigt werden.
-q0021_0006;Ich gehe bewusst gegen die Filterblase vor.
-q0022_0001;Ich l√∂sche den Verlauf des Browsers und meine Cookies.
-q0022_0002;Ich verwende die Incognito-Funktion.
-q0022_0003;Ich klicke und like viele verschiedene Beitr√§ge, um Vielfalt zu erzwingen.
-q0022_0004;Ich benutze den ‚ÄúExplore‚Äù-Button bei Facebook, der mir verschiedene News anzeigt.
-q0022_0005;Ich deabonniere einige meiner Freunde/Seiten.
-q0023_0001;
-q0024_0001;
-q0025;Vielen Dank f√ºr Ihre Teilnahme!Haben Sie Anmerkungen zur Umfrage? Teilen Sie uns diese gern mit.
-p0001;Page 1
-p0002;Page 2
-p0003;Page 3
-p0004;Page 4
-p0005;Page 5
-p0006;Page 6
-p0007;Page 7
+variable_names;label_names;
+CollectorNm;CollectorNm;
+respondent_id;respondent_id;
+collector_id;collector_id;
+date_created;date_created;
+date_modified;date_modified;
+ip_address;ip_address;
+email_address;email_address;
+first_name;first_name;
+last_name;last_name;
+custom_1;custom_1;
+age;Bitte geben Sie Ihr Alter in Jahren an.;
+gender;Bitte geben Sie Ihr Geschlecht an.;
+education;Bitte geben Sie Ihren h√∂chsten Bildungsabschluss an:;
+job;Bitte geben Sie die T√§tigkeit an, der Sie im Moment nachgehen:;
+last_job;Meine letzte berufliche T√§tigkeit bzw. Ausbildung war in einem:;
+big5_01;Ich bin eher zurückhaltend, reserviert.;
+big5_02;Ich schenke anderen leicht Vertrauen, glaube an das Gute im Menschen.;
+big5_03;Ich bin bequem, neige zur Faulheit.;
+big5_04;Ich bin entspannt, lasse mich durch Stress nicht aus der Ruhe bringen.;
+big5_05;Ich habe künstlerisches Interesse.;
+big5_06;Ich gehe aus mir heraus, bin gesellig.;
+big5_07;Ich neige dazu, andere zu kritisieren.;
+big5_08;Ich erledige Aufgaben gründlich.;
+big5_09;Ich werde leicht nervös und unsicher.;
+big5_10;Ich habe eine aktive Vorstellungskraft, bin fantasievoll.;
+facebook_usage;Ich benutze Facebook…(immer häufiger, immer weniger, gleichbleibend);
+fbg_smartphone;Smartphone;(mehrmals täglich, täglich, mehrmals wöchentlich, mehrmals im Monat, Ein Mal im Monat oder weniger, Nie)
+fbg_laptop;Laptop;
+fbg_tablet;Tablet;
+fbg_pc;Desktop PC;
+fb_um_friends;Ich nutze Facebook hauptsächlich, um mit meinen Freunden in Kontakt zu bleiben.;
+fb_um_newfriends;Ich nutze Facebook, um neue Leute kennenzulernen.;
+fb_um_job;Ich nutze Facebook für berufliche Zwecke.;
+fb_um_mich_informieren;Ich nutze Facebook, um mich über politische und/oder gesellschaftliche Themen zu informieren.;
+fb_um_andere_informieren;Ich nutze Facebook, um andere über politische und/oder gesellschaftliche Themen zu informieren.;
+fb_um_Meinung_zu_äußern;Ich nutze Facebook, um meine Meinung zu politischen und/oder gesellschaftlichen Themen zu äußern.;
+fb_gerne_teilen;Ich teile gerne und häufig Beitr√äe, die ich interessant finde.;
+fb_gerne_posten;Ich poste auf Facebook gerne Dinge aus meinem Leben.;
+fb_posten_pinnwand;posten Sie etwas auf Ihre Pinnwand?;
+fb_private_Nachricht;senden Sie eine private Nachricht an einen Facebook-Freund?;
+fb_Besuch_Profil;besuchen Sie das Profil anderer Facebook-Nutzer?;
+fb_Besuch_Öffentliche_Seiten;besuchen Sie öffentliche Seiten auf Facebook?;
+fb_Anzahl_Kontakte;Wie viele Facebook-Kontakte haben Sie ungef√§hr?;
+fb_Anzahl_Seiten_geliked;Wie viele Seiten haben Sie ungefähr geliked?;
+fb_Anzahl_Gruppen;In wie vielen Facebook-Gruppen sind Sie?;
+fb_Kontakte_kennen_persönlich;Ich kenne den Großteil meiner Facebook-Kontakte persönlich.;
+Newsfeed_persönliche_Interessen;Mein Newsfeed spiegelt meine persönlichen Interessen wieder.;
+Newsfeed_Verständnis_Vorschlag_Beiträge;Ich verstehe, auf welches Grundlage Facebook mir die Beiträge vorschlägt.;
+Newsfeed_gekaufte_erste_Beiträge;Ich denke, die als erstes angezeigten Beiträge sind gekauft.;
+Newsfeed_erste_angezeigt_Beiträge;Ich denke, dass die als erstes angezeigten Beiträge bei meinen Facebook-Kontakten am beliebtesten sind.;
+Newsfeed_politisches_Lager;Ich habe das Gefühl, dass Informationen in meinem Newsfeed nur aus einem politischen Lager kommen.;
+fb_Beiträge_von_Freunden_geliked_like_ich;Beiträge die von meinen guten Freunden geliked wurden, like ich auch.;
+fb_Beiträge_von_Freunden_geliked_spiegeln_wieder;Beiträge, die von meinen guten Freunden geliked wurden, spiegeln meine Meinung wieder.;
+fb_Beiträge_von_übrigen_Freunden_geliked_like_ich;Beiträge, die von meinen √ºbrigen Freunden geliked wurden, like ich auch.;
+fb_Beiträge_von_Freunden_geliked_klicke_ich;Beiträge, die von meinen guten Freunden geliked wurden, klicke ich an.;
+fb_Beiträge_von_Freunden_geteilt_klicke_ich;Beiträge, die von meinen guten Freunden geteilt wurden, klicke ich an.;
+fb_Beiträge_von_Freunden_geteilt_teile_ich;Beiträge, die von meinen guten Freunden geteilt wurden, teile ich auch.;
+fb_Beiträge_unachtsam_wer_liked_teilt;Ich achte nicht darauf, wer die angezeigten Beitr√§ge geliked oder geteilt hat.;
+fb_Beiträge_meine_Meinung_like_ich;Beiträge, die meine Meinung widerspiegeln, like ich.;
+fb_Beiträge_unvollständig_gelesen_like_ich;Ich like auch Beiträge, die ich nicht vollst√§ndig gelesen habe.;
+fb_Beiträge_nicht_angeklickt_like_ich;Ich like auch Beiträge, die ich nicht angeklickt habe.;
+FB_schon_gehört;Ich habe schon vorher von der Theorie der Filterblase gehört.;
+FB_glaube_existiert;Ich glaube, dass die Filterblase existiert.;
+FB_betrifft_persönlich;Die Filterblase betrifft mich persönlich.;
+FB_Problem;Die Filterblase ist ein Problem.;
+FB_interessante_Beiträge;Die Filterblase sorgt dafür, dass mir nur interessante Beiträge angezeigt werden.;
+FB_bewusstes_Vorgehen;Ich gehe bewusst gegen die Filterblase vor.;
+FBV_Löschen;Ich lösche den Verlauf des Browsers und meine Cookies.;
+FBV_Incognito;Ich verwende die Incognito-Funktion.;
+FBV_Vielfalt_erzwingen;Ich klicke und like viele verschiedene Beiträge, um Vielfalt zu erzwingen.;
+FBV_Explorer;Ich benutze den ‚ÄúExplore‚Äù-Button bei Facebook, der mir verschiedene News anzeigt.;
+FBV_deabonnieren;Ich deabonniere einige meiner Freunde/Seiten.;
+FB_Wunsch_Werkzeug;Ich würde mir ein Werkzeug wünschen, welches mir verschiedene Themen, Meinungen und Ideen aufzeigt. ;
+FB_Wunsch_Newsfeed;Ich würde mir einen ungefilterten, chronologischen Newsfeed wünschen.;
+Anmerkungen;Vielen Dank für Ihre Teilnahme!Haben Sie Anmerkungen zur Umfrage? Teilen Sie uns diese gern mit.;
+p0001;Page 1;
+p0002;Page 2;
+p0003;Page 3;
+p0004;Page 4;
+p0005;Page 5;
+p0006;Page 6;
+p0007;Page 7;
