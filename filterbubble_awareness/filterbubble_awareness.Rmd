@@ -65,7 +65,8 @@ if(!file.exists(codebook_filename)){
   
   
   c_df <- c_df %>% mutate_at(vars(starts_with("big5")), convert_to_factor, rev = T )
-  c_df <- c_df %>% mutate_at(vars(starts_with("FB_")), convert_to_factor, rev = T )
+  c_df <- c_df %>% mutate_at(vars(starts_with("FB_")), convert_to_factor, rev = T ) 
+  c_df <- c_df %>% mutate_at(vars(starts_with("FBV_")), convert_to_factor, rev = T )
 
   # filter incomplete responses
   # c_df %>% filter(rowSums(is.na(c_df)) < 5)
@@ -97,6 +98,17 @@ if(!file.exists(codebook_filename)){
   c_df <- c_df %>% cbind(scores$scores) 
   
   c_df %>% select(-starts_with("FB_"))
+  
+  
+  key_list_FBV <- list(FBV = list("FBV_L√∂schen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren"))
+  
+  scores <- psych::scoreItems(key_list_FBV, c_df, min = 1, max = 6, impute = "mean")
+  
+  scores
+  
+  c_df <- c_df %>% cbind(scores$scores) 
+  
+  c_df %>% select(-starts_with("FBV_"))
 
 ```
 
@@ -123,6 +135,7 @@ mean(c_df$b5_c)
 mean(c_df$FB)
 
 ### Action against filter bubble 
+
 
 ### wishes regarding facebook
 

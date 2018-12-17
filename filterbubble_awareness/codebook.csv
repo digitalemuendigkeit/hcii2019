@@ -27,7 +27,7 @@ big5_10;Ich habe eine aktive Vorstellungskraft, bin fantasievoll.
 facebook_usage;Ich benutze Facebook...
 fb_smartphone;Smartphone
 fb_laptop;Laptop
-fc_tablet;Tablet
+fb_tablet;Tablet
 fb_pc;Desktop PC
 fb_um_friends;Ich nutze Facebook hauptsächlich, um mit meinen Freunden in Kontakt zu bleiben.
 fb_um_newfriends;Ich nutze Facebook, um neue Leute kennenzulernen.
@@ -66,7 +66,7 @@ FB_betrifft_persönlich;Die Filterblase betrifft mich persönlich.
 FB_Problem;Die Filterblase ist ein Problem.
 FB_interessante_Beiträge;Die Filterblase sorgt dafür, dass mir nur interessante Beiträge angezeigt werden.
 FB_bewusstes_Vorgehen;Ich gehe bewusst gegen die Filterblase vor.
-FBV_L�schen;Ich lösche den Verlauf des Browsers und meine Cookies.
+FBV_Löschen;Ich lösche den Verlauf des Browsers und meine Cookies.
 FBV_Incognito;Ich verwende die Incognito-Funktion.
 FBV_Vielfalt_erzwingen;Ich klicke und like viele verschiedene Beiträge, um Vielfalt zu erzwingen.
 FBV_Explorer;Ich benutze den “Explore”-Button bei Facebook, der mir verschiedene News anzeigt.
