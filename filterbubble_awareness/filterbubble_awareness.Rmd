@@ -2,7 +2,10 @@
 title: "Filterbubble Awareness"
 author: "Laura Burbach, André Calero Valdez"
 date: "12 12 2018"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -11,12 +14,15 @@ library(tidyverse)
 library(sjlabelled)
 library(sjPlot)
 library(forcats)
+library(corrplot)
+library(hcictools)
 ```
 
 # Data Cleaning
 First we clean our SPSS output files. For this purpose we remove identifying information..
-```{r data-cleaning}
-raw <- haven::read_sav("data/raw.sav")
+
+```{r data-cleaning, include=FALSE}
+raw <- haven::read_sav("data/raw.sav", encoding = "UTF-8")
 
 
 # rename variables ---- 
@@ -109,41 +115,24 @@ if(!file.exists(codebook_filename)){
   c_df <- c_df %>% cbind(scores$scores) 
   
   c_df %>% select(-starts_with("FBV_"))
+  
+  c_df
 
 ```
 
-# analysis
+# Analysis
 Here we compute the results
+
+## Descriptive Statistics
+```{r descriptive}
+psych::describe(c_df)
+```
+
 ```{r analysis}
-knitr::opts_chunk$set(echo = TRUE)
-
 ## means
-### age
-
-mean(c_df$age)
-
-### big 5 
-
-mean(c_df$b5_n)
-mean(c_df$b5_e)
-mean(c_df$b5_o)
-mean(c_df$b5_a)
-mean(c_df$b5_c)
-
-### FB
-
-mean(c_df$FB)
-
-### Action against filter bubble 
 
 
-### wishes regarding facebook
-
-
-
-## correlations
-
-### 1
+get_labels(c_df$gender)
 
 
   hypo_1a <- t.test(b5_n ~gender, data= c_df)
@@ -161,9 +150,66 @@ mean(c_df$FB)
 
 ```
 
+## ANOVA Test
+
+```{r anova}
+
+jmv::ttestIS(c_df, (c("b5_n", "b5_e", "b5_c")), group = "gender", welchs = T, norm = T)
+
+result <- jmv::ANOVA(data = c_df, 
+                     dep = c("b5_o"), 
+                     factors = "education", 
+                     emmPlots = T, 
+                     emMeans = list("education"))
+
+
+model <- aov(data = c_df, b5_n ~ education)
+m<- anova(model)
 
 
 
+c_df %>% select(starts_with("b5"), "FBV", starts_with("fb")) %>% select(1:10) %>% 
+  mutate_if(is.ordered, as.numeric) %>% 
+  hcictools::cor.matrix.plot()
+
+
+c_df %>% select(starts_with("b5"), "FBV", starts_with("fb")) %>% select(1:10) %>% 
+  mutate_if(is.ordered, as.numeric) -> corrdata
+
+cor.test(data = corrdata, ~ b5_n + fb_tablet) -> hypo_c1
+
+apastats::describe.r(hypo_c1, type="latex")
+
+lm(data = corrdata, formula = fb_tablet ~ b5_n) -> hypo_lm1
+lm(data = corrdata, formula = fb_tablet ~ b5_n + fb_smartphone) -> hypo_lm2
+
+anova(hypo_lm1, hypo_lm2)
+
+apastats::describe.glm(hypo_lm2, type="latex")
+
+psych::alpha(corrdata, list("b5_o", "b5_n", "b5_c"))
+
+library(likert)
+c_df %>% select(6:15) %>% likert() %>% plot()
+
+```
+
+
+
+### age
+
+
+
+### Action against filter bubble 
+
+
+### wishes regarding facebook
+
+
+
+## correlations
+
+### 1
 
 
 
