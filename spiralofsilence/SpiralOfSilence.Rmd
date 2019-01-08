@@ -79,4 +79,24 @@ if(!file.exists(codebook_filename)){
   
   c_df %>% select(-starts_with("big5"))
   
+  smusershigh <- filter(c_df,c_df$FrequencyOfSMUse > 4)
+  smuserslow <- filter(c_df,c_df$FrequencyOfSMUse <= 4)
+  
+  
 ```
+# Abstract
+- In Social Media services such as Facebook, users encounter a wide range of other user's opinions on subjects concerning various topics
+- Users have to evaluate the correctness and their opinion perceiption by themselves, leading to effects like the spiral silence and filter bubbles
+- Occurence of Fake News and Social Bots who try to change Meinungsklima through Vortäuschen von Mehrheiten additionally increases difficulty of evaluation process
+- Digital responsibility is key for handling these effects and forming an independent opinion
+- We wanted to investigate, if the opinion of a user on certain topics changes, if he is confronted with negative or positive comments
+- Mitläufereffekt, Schweigespirale auch in Social Media?
+- Examined user factors: Gender, Big5 (Openness, extraversion, neuroticism), Frequency of Social Media Use
+- Scenarios: 8 Facebook Posts, 4 topics: public toilets, Steuern für ungesunde Lebensmittel, Christiano Ronaldo, Rauchmelderpflicht
+- Neutrale Themen vs. kontrovers diskutierte Themen, Vorabfrage der Meinung des Probanden zum jeweiligen Thema
+- Bei positiver Einstellung: Anzeige eines Beitrags zu dem jeweiligen Thema mit einem positiven und vier negativen Kommentaren
+- Am Ende: Erneute Abfrage der Einstellung des Probanden, hat er seine Meinung geändert?
+- Hypotheses: User factors do influence possible opinion change
+- Results: No measurable effects on most topics and user factors, only reliable correlation: opinion change on topic Ronaldo and openness
+- Methodenreflexion: Very young aged (27.5), probably high experienced in Social Media Use
+- Outlook: Opinion change could be dependent on emotional component of topic. Our prediction: Probanden lassen sich bei emotionaleren Themen tendenzielln nciht beeinflussen -> Probanden haben bereits eine Digitale Mündigkeit entwickelt
