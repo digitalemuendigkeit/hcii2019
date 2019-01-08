@@ -100,7 +100,7 @@ if(!file.exists(codebook_filename)){
   c_df %>% select(-starts_with("FB_"))
   
   
-  key_list_FBV <- list(FBV = list("FBV_L√∂schen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren"))
+  key_list_FBV <- list(FBV = list("FBV_Loeschen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren"))
   
   scores <- psych::scoreItems(key_list_FBV, c_df, min = 1, max = 6, impute = "mean")
   
