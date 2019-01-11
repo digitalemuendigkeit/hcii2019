@@ -1,11 +1,19 @@
 ---
-title: "Filterbubble Awareness"
-author: "Laura Burbach, André Calero Valdez"
+title: "Bubble Trouble: Strageties something something Filterbubble Awareness"
+author: "Laura Burbach, Patrick Halbach, Martina Ziefle, André Calero Valdez"
 date: "12 12 2018"
 output: 
   html_document:
+    theme: flatly
     toc: true
+    toc_float: true
     toc_depth: 2
+    collapsed: false
+    df_print: paged
+    dev: png
+    self_contained: true
+    number_sections: true
+
 ---
 
 ```{r setup, include=FALSE}
@@ -16,6 +24,8 @@ library(sjPlot)
 library(forcats)
 library(corrplot)
 library(hcictools)
+
+source("../survemonky_helper.R")
 ```
 
 # Data Cleaning
@@ -28,6 +38,7 @@ raw <- haven::read_sav("data/raw.sav", encoding = "UTF-8")
 # rename variables ---- 
 codebook_filename <- "codebook.csv"
 
+# If file does not exist
 if(!file.exists(codebook_filename)){
   variable_names <- names(raw)
   label_names <- get_label(raw)
@@ -39,84 +50,90 @@ if(!file.exists(codebook_filename)){
   codebook <-read_delim(codebook_filename, delim=";")
 }
 
-  # Change variable labels to those from the codebook.csv
-  names(raw) <- codebook$variable_names
-  
-  names(raw)
+# Change variable labels to those from the codebook.csv
+names(raw) <- codebook$variable_names
+
+names(raw)
 
 # select required variables ----
-  raw[,c(-1:-10)] %>% select(-starts_with("p0")) -> c_df
-  
-  
-  
+raw[,c(-1:-10)] %>% select(-starts_with("p0")) -> data
+
 # factors and ordinal data
-  
-  c_df$age <- as.numeric(c_df$age)
-  c_df$gender
- 
-  c_df$education <- factor(c_df$education, 
-                           labels=get_labels(c_df$education), 
-                           level = 1:7, ordered = T)
+data$age <- as.numeric(data$age)
+data$gender
 
-  
-  # Function to convert factor variabls from surveymonkey spss file to usable factors
-  convert_to_factor <- function(x, ordered = T, rev = F) {
-      result <- factor(x, labels = get_labels(x), 
-                       levels = 1:length(get_labels(x)), ordered = ordered )
-      if(rev) {
-        result <- fct_rev(result)
-      }
-      result
-  }
-  
-  
-  c_df <- c_df %>% mutate_at(vars(starts_with("big5")), convert_to_factor, rev = T )
-  c_df <- c_df %>% mutate_at(vars(starts_with("FB_")), convert_to_factor, rev = T ) 
-  c_df <- c_df %>% mutate_at(vars(starts_with("FBV_")), convert_to_factor, rev = T )
+data$education <- factor(data$education, 
+                         labels=get_labels(data$education), 
+                         level = 1:7, ordered = T)
 
-  # filter incomplete responses
-  # c_df %>% filter(rowSums(is.na(c_df)) < 5)
-  
-  
-  codebook[16:25,]$label_names
-  # calculate factors and scales
-  
-  key_list_big5 <- list(b5_n = list("-big5_04", "big5_09"),
-                   b5_e = list("-big5_01", "big5_06"),
-                   b5_o = list("big5_05", "big5_10"),
-                   b5_a = list("big5_02", "-big5_07"),
-                   b5_c = list("-big5_03", "big5_08"))
 
-  scores <- psych::scoreItems(key_list_big5, c_df, min = 1, max = 6, impute = "mean")  
-  
-  scores
-  
-  c_df <- c_df %>% cbind(scores$scores) 
-  
-  c_df %>% select(-starts_with("big5"))
-  
-  key_list_FB <- list(FB = list("FB_schon_gehört", "FB_glaube_existiert", "FB_betrifft_persönlich", "FB_Problem", "FB_interessante_Beiträge", "FB_bewusstes_Vorgehen"))
-  
-  scores <- psych::scoreItems(key_list_FB, c_df, min = 1, max = 6, impute = "mean")  
-  
-  scores
-  
-  c_df <- c_df %>% cbind(scores$scores) 
-  
-  c_df %>% select(-starts_with("FB_"))
-  
-  
-  key_list_FBV <- list(FBV = list("FBV_Loeschen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren"))
-  
-  scores <- psych::scoreItems(key_list_FBV, c_df, min = 1, max = 6, impute = "mean")
-  
-  scores
-  
-  c_df <- c_df %>% cbind(scores$scores) 
-  
-  c_df %>% select(-starts_with("FBV_"))
-  
-  c_df
+data <- data %>% mutate_at(vars(starts_with("big5")), srvmky_convert_factor, rev = T )
+data <- data %>% mutate_at(vars(starts_with("FB_")), srvmky_convert_factor, rev = T ) 
+data <- data %>% mutate_at(vars(starts_with("FBV_")), srvmky_convert_factor, rev = T )
+
+# filter incomplete responses
+# data %>% filter(rowSums(is.na(data)) < 5)
+
+
+codebook[16:25,]$label_names
+# calculate factors and scales
+
+
+```
+
+
+## Calculation of scales
+
+```{r big5}
+
+# create big 5 factors ----  
+key_list_big5 <- list(b5_n = list("-big5_04", "big5_09"),
+                      b5_e = list("-big5_01", "big5_06"),
+                      b5_o = list("big5_05", "big5_10"),
+                      b5_a = list("big5_02", "-big5_07"),
+                      b5_c = list("-big5_03", "big5_08"))
+
+scores <- psych::scoreItems(key_list_big5, data, min = 1, max = 6, impute = "mean")  
+
+scores
+
+data <- data %>% cbind(scores$scores) 
+
+#data <- data %>% select(-starts_with("big5"))
+
+key_list_FB <- list(FB = list("FB_schon_gehört", "FB_glaube_existiert", "FB_betrifft_persönlich", "FB_Problem", "FB_interessante_Beiträge", "FB_bewusstes_Vorgehen"))
+
+scores <- psych::scoreItems(key_list_FB, data, min = 1, max = 6, impute = "mean")  
+
+scores
+
+# Attach scale
+data <- data %>% cbind(scores$scores) 
+
+# Remove items
+# data <- data %>% select(-starts_with("FB_"))
+
+
+key_list_FBV <-
+  list(
+  FBV = list(
+  "FBV_Loeschen",
+  "FBV_Incognito",
+  "FBV_Vielfalt_erzwingen",
+  "FBV_Explorer",
+  "FBV_deabonnieren"
+  )
+  )
+
+scores <- psych::scoreItems(key_list_FBV, data, min = 1, max = 6, impute = "mean")
+
+scores
+
+data <- data %>% cbind(scores$scores) 
+
+# data <- data %>% select(-starts_with("FBV_"))
+
+data
 
 ```
 
@@ -125,21 +142,21 @@ Here we compute the results
 
 ## Descriptive Statistics
 ```{r descriptive}
-psych::describe(c_df)
+psych::describe(data)
 ```
 
 ```{r analysis}
 ## means
 
 
-get_labels(c_df$gender)
+get_labels(data$gender)
 
 
-  hypo_1a <- t.test(b5_n ~gender, data= c_df)
-  hypo_1b <- t.test(b5_e ~gender, data= c_df)
-  hypo_1c <- t.test(b5_o ~gender, data= c_df)
-  hypo_1d <- t.test(b5_a ~gender, data= c_df)
-  hypo_1e <- t.test(b5_c ~gender, data= c_df)
+  hypo_1a <- t.test(b5_n ~gender, data= data)
+  hypo_1b <- t.test(b5_e ~gender, data= data)
+  hypo_1c <- t.test(b5_o ~gender, data= data)
+  hypo_1d <- t.test(b5_a ~gender, data= data)
+  hypo_1e <- t.test(b5_c ~gender, data= data)
 
   apastats::describe.ttest(hypo_1a, type="latex")
   apastats::describe.ttest(hypo_1b, type="latex")
@@ -154,26 +171,26 @@ get_labels(c_df$gender)
 
 ```{r anova}
 
-jmv::ttestIS(c_df, (c("b5_n", "b5_e", "b5_c")), group = "gender", welchs = T, norm = T)
+jmv::ttestIS(data, (c("b5_n", "b5_e", "b5_c")), group = "gender", welchs = T, norm = T)
 
-result <- jmv::ANOVA(data = c_df, 
+result <- jmv::ANOVA(data = data, 
                      dep = c("b5_o"), 
                      factors = "education", 
                      emmPlots = T, 
                      emMeans = list("education"))
 
 
-model <- aov(data = c_df, b5_n ~ education)
+model <- aov(data = data, b5_n ~ education)
 m<- anova(model)
 
 
 
-c_df %>% select(starts_with("b5"), "FBV", starts_with("fb")) %>% select(1:10) %>% 
+data %>% select(starts_with("b5"), "FBV", starts_with("fb")) %>% select(1:10) %>% 
   mutate_if(is.ordered, as.numeric) %>% 
   hcictools::cor.matrix.plot()
 
 
-c_df %>% select(starts_with("b5"), "FBV", starts_with("fb")) %>% select(1:10) %>% 
+data %>% select(starts_with("b5"), "FBV", starts_with("fb")) %>% select(1:10) %>% 
   mutate_if(is.ordered, as.numeric) -> corrdata
 
 cor.test(data = corrdata, ~ b5_n + fb_tablet) -> hypo_c1
@@ -189,8 +206,8 @@ apastats::describe.glm(hypo_lm2, type="latex")
 
 psych::alpha(corrdata, list("b5_o", "b5_n", "b5_c"))
 
-library(likert)
-c_df %>% select(6:15) %>% likert() %>% plot()
+#library(likert)
+#data %>% select(6:15) %>% likert() %>% plot()
 
 ```
 
@@ -210,18 +227,6 @@ c_df %>% select(6:15) %>% likert() %>% plot()
 ## correlations
 
 ### 1
-
-
-
-
-
-
-# Heading 1
-Text  *Kursiv* **BOld**
-
-## Heading 2
-
-### Heading 3
 
 
 
