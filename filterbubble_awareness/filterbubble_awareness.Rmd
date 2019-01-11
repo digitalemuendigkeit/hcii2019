@@ -7,7 +7,7 @@ output:
     theme: flatly
     toc: true
     toc_float: true
-    toc_depth: 2
+    toc_depth: 3
     collapsed: false
     df_print: paged
     dev: png
@@ -84,7 +84,9 @@ codebook[16:25,]$label_names
 
 ## Calculation of scales
 
-```{r big5}
+
+### Calculate Big 5
+```{r scale_big5}
 
 # create big 5 factors ----  
 key_list_big5 <- list(b5_n = list("-big5_04", "big5_09"),
@@ -101,6 +103,13 @@ data <- data %>% cbind(scores$scores)
 
 #data <- data %>% select(-starts_with("big5"))
 
+
+```
+
+
+### Facebook
+```{r scale_facebook}
+
 key_list_FB <- list(FB = list("FB_schon_gehört", "FB_glaube_existiert", "FB_betrifft_persönlich", "FB_Problem", "FB_interessante_Beiträge", "FB_bewusstes_Vorgehen"))
 
 scores <- psych::scoreItems(key_list_FB, data, min = 1, max = 6, impute = "mean")  
@@ -113,6 +122,13 @@ data <- data %>% cbind(scores$scores)
 # Remove items
 # data <- data %>% select(-starts_with("FB_"))
 
+
+
+```
+
+
+### Avoidance Strategies
+```{r scale_fbv}
 
 key_list_FBV <-
   list(
@@ -145,27 +161,36 @@ Here we compute the results
 psych::describe(data)
 ```
 
+### Gender Differences for Personality
 ```{r analysis}
 ## means
 
+formatting_option <- "pandoc" # or "latex"
 
-get_labels(data$gender)
+apa_ttest <- function(formula, data, type = formatting_option, alpha = 0.05) {
+  hypo <- t.test(formula, data = data)
 
-
-  hypo_1a <- t.test(b5_n ~gender, data= data)
-  hypo_1b <- t.test(b5_e ~gender, data= data)
-  hypo_1c <- t.test(b5_o ~gender, data= data)
-  hypo_1d <- t.test(b5_a ~gender, data= data)
-  hypo_1e <- t.test(b5_c ~gender, data= data)
-
-  apastats::describe.ttest(hypo_1a, type="latex")
-  apastats::describe.ttest(hypo_1b, type="latex")
-  apastats::describe.ttest(hypo_1c, type="latex")  
-  apastats::describe.ttest(hypo_1d, type="latex")  
-  apastats::describe.ttest(hypo_1e, type="latex")  
+  stat_output <-  apastats::describe.ttest(hypo, type = type)
   
+  if(hypo$p.value < alpha){
+    msg <- paste0("Es gibt einen signifikanten Unterschied (",stat_output,").")
+  } else {
+    msg <- paste0("Es gibt keinen signifikanten Unterschied (",stat_output,").")
+  }
+  
+  msg
+}
+
+
+  data %>% apa_ttest(formula = b5_n ~ gender)
+  data %>% apa_ttest(formula = b5_o ~ gender)
+  data %>% apa_ttest(formula = b5_c ~ gender)
+  data %>% apa_ttest(formula = b5_e ~ gender)
+  data %>% apa_ttest(formula = b5_a ~ gender)
 
 ```
+
+Unterschied: zwischen Geschlechtern für Offenheit: `r data %>% apa_ttest(formula = b5_o ~ gender)`
 
 ## ANOVA Test
 
