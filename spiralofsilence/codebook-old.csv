@@ -1,4 +1,4 @@
-﻿variable_names;label_names
+variable_names;label_names
 CollectorNm;CollectorNm
 respondent_id;respondent_id
 collector_id;collector_id
@@ -20,12 +20,12 @@ ActiveUsage_Youtube;Ich benutze aktiv folgende Social Media-Dienste:
 ActiveUsage_Other;Sonstiges (bitte angeben)
 FrequencyOfSMUse;
 FrequencyOfSMUse_Other;Sonstiges (bitte angeben)
-big5_o1;Ich habe eine aktive Vorstellungskraft, bin fantasievoll.
-big5_o2;Ich habe großes künstlerisches Interesse.
-big5_e1;Ich bin eher zurückhaltend, reserviert.
-big5_e2;Ich gehe aus mir heraus, bin gesellig.
-big5_n1;Ich bin entspannt, lasse mich durch Stress nicht aus der Ruhe bringen.
-big5_n2;Ich werde leicht nervös und unsicher.
+big5_01;Ich habe eine aktive Vorstellungskraft, bin fantasievoll.
+big5_02;Ich habe großes künstlerisches Interesse.
+big5_03;Ich bin eher zurückhaltend, reserviert.
+big5_04;Ich gehe aus mir heraus, bin gesellig.
+big5_05;Ich bin entspannt, lasse mich durch Stress nicht aus der Ruhe bringen.
+big5_06;Ich werde leicht nervös und unsicher.
 topToilets_opinion;https://sites.google.com/site/schweigespirale123/_/rsrc/1512473554282/home/thema-1-toiletten/Toi_H_1.png
 topFood_opinion;https://sites.google.com/site/schweigespirale123/_/rsrc/1512505984310/home/thema-2-lebensmittel/thema-3-ronaldo/thema-4-rauchmelder/Leben_H_3.png
 topRonaldo_opinion;https://sites.google.com/site/schweigespirale123/_/rsrc/1512495186350/home/thema-2-lebensmittel/thema-3-ronaldo/Ronaldo_H_3.png
