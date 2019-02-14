@@ -169,8 +169,91 @@ Here we look at the reasons to use Facebook
 
 #barplot(table(data$FB_schon_gehört, data$FB_glaube_existiert, data$FB_betrifft_persönlich, data$FB_Problem, data$FB_interessante_Beiträge, data$FB_bewusstes_Vorgehen),col=c("black","green","red"),
 #ylab="Anzahl Personen")
-ggplot(data, aes(x=data$FB_interessante_Beiträge)) +
-  geom_bar()
+
+
+library(purrr)
+
+variable_set <- c(
+            "FB_schon_gehört",
+            "FB_glaube_existiert",
+            "FB_interessante_Beiträge",
+            "FB_betrifft_persönlich",
+            "FB_Problem",
+            "FB_bewusstes_Vorgehen"
+            )
+
+label_set <- c(
+              "sg",
+              "existier",
+              "interessant",
+              "Betrifft per",
+              "problem",
+              "bewusst"
+              )
+
+make_variable_labels <- function(x) {
+  factor(x, levels = variable_set,
+            labels = label_set
+            )
+}
+
+data %>% 
+  dplyr::select(variable_set) %>% 
+  map_df(as.numeric) %>% 
+  psych::describe() %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  mutate (variablename = make_variable_labels(rowname)) -> plot_data
+
+library(hcictools)
+library(RColorBrewer)
+
+rwthcolors <- hcictools::rwth.colorpalette()
+
+agreement_palette <- colorRampPalette(c(rwthcolors$red,"white", rwthcolors$green))
+
+plot_data %>% 
+  ggplot() +
+  aes(x=reorder(variablename, mean), y = mean, fill = reorder(variablename, mean), 
+      ymin = mean - se * 1.96 , ymax = mean + se * 1.96) +
+  scale_y_continuous(limits = c(0,5), labels = 1:6) +
+  geom_col() +
+  geom_errorbar(width = 0.3) +
+  labs(x="Variables", y="Mean of Scale (1-6)", 
+       title="Most user have heard of the filter bubble",
+       subtitle = "Different measures of Filter buble awareness",
+       caption = "Errorbar denots the 95% confidence intervall of the mean.") +
+  guides(fill = FALSE) +
+  coord_flip() +
+  #scale_fill_brewer(palette = "Spectral") + 
+  scale_fill_manual(values=agreement_palette(6)) +
+  theme_bw() + 
+  NULL
+
+
+agreement_english <- function(x) {
+  factor(x, levels = c("Stimme gar nicht zu",
+                            "Stimme nicht zu",
+                            "Stimme eher nicht zu",
+                            "Stimme eher zu",
+                            "Stimme zu",
+                            "Stimme vollkommen zu"),
+              labels = c("completely disagree",
+                         "disagree",
+                         "rather disagree",
+                         "rather agree",
+                         "agree",
+                         "completely agree"))
+}
+
+
+
+data %>% 
+  dplyr::select(variable_set) %>% 
+ magrittr::set_colnames(label_set) %>%
+  mutate_all(agreement_english) %>% 
+  likert() %>% plot(low.color = rwthcolors$red, high.color = rwthcolors$green) + 
+  labs(title="Test")
 
 ```
 
