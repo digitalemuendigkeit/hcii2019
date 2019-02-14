@@ -14,6 +14,7 @@ library(haven)
 library(sjlabelled)
 library(psych)
 library(data.table)
+library(hcictools)
 ```
 
 First we clean our SPSS output files. For this purpose we remove identifying information..
@@ -93,8 +94,8 @@ if(!file.exists(codebook_filename)){
 
 ```
 
-GGPlots
-```{r plotting}
+GGPlot for Social Media Usage
+```{r plot-smuse}
 
 SMdata <- data[,c(3:8)]
 
@@ -102,30 +103,90 @@ SMdata <- data[,c(3:8)]
 sumdata <- data.frame(value=apply(SMdata,2,sum))
 sumdata$key <- c("Facebook", "Twitter", "Instagram","Google Plus","Snapchat","Youtube")
 
-SMPlot <- ggplot(data=sumdata, aes(x=reorder(key, -value), y=value, fill=key)) +
+SMPlot <- ggplot(data=sumdata, aes(x=reorder(key, -value), y=value, fill=reorder(key, -value))) +
   geom_bar(stat="identity") +
   geom_text(aes(x=key,y=value, label=value),vjust=-1) +
   xlab("Social media service") +
   ylab("User count") +
   ylim(0,160) +
+  scale_fill_viridis_d() +
   theme_grey()
 
 SMPlot + guides(fill=FALSE)
 
-initialopinion <- data.frame(PublicToilets=data$topToilets_opinion,Foodtaxes=data$topFood_opinion,Ronaldo=data$topRonaldo_opinion,Smokedetectors=data$topSmokedet_opinion)
+ggsave("SocialMediaUse.pdf",width = 7, height = 4)
 
-opinionsums <- data.frame(sum(initialopinion$PublicToilets), sum(initialopinion$Foodtaxes))
+```
 
-initialopinion$row <- seq_len(nrow(initialopinion))
-initialopinion <- melt(initialopinion, id.vars = "row")
-initialopinion$value <- factor(initialopinion$value)
-ggplot(initialopinion, aes(x = variable, fill=value)) + 
+
+Plotting the initial opinion
+```{r plot-initopinion}
+
+rwthcolors <- hcictools::rwth.colorpalette()
+agreement_palette <- colorRampPalette(c(rwthcolors$red,"white",rwthcolors$green))
+
+# Actual code for building the stacked barplot without working text labels
+initOp <- data.frame(PublicToilets=data$topToilets_opinion,Foodtaxes=data$topFood_opinion,
+                     Ronaldo=data$topRonaldo_opinion,Smokedetectors=data$topSmokedet_opinion)
+
+initOp$row <- seq_len(nrow(initOp))
+initOp <- melt(initOp, id.vars = "row")
+initOp$value <- factor(initOp$value)
+
+ggplot(initOp, aes(x = variable, fill=value)) + 
   geom_bar() +
-#  geom_text(aes(x=variable,y=value, label=value),vjust=-1) +
-#  scale_y_continuous() +
-  #xlab("\nTopic") +
-  #ylab("Opinion\n") +
- # guides(fill = FALSE) +
+  scale_fill_manual(values=agreement_palette(2)) +
   theme_grey()
 
+
+# Crappy Code, but works for now for the stacked barplot with labels
+dfop <- data.frame(PublicToilets=data$topToilets_opinion,Foodtaxes=data$topFood_opinion,
+                     Ronaldo=data$topRonaldo_opinion,Smokedetectors=data$topSmokedet_opinion)
+
+df <- data.frame(x = factor(c("1. Public Toilets", "2. Food Taxes", "1. Public Toilets", "2. Food Taxes", "3. Ronaldo", "4. Smoke detectors", "3. Ronaldo", "4. Smoke detectors")), y = c(sum(dfop$PublicToilets == 1), sum(dfop$Foodtaxes == 1),  sum(dfop$PublicToilets == 2), sum(dfop$Foodtaxes == 2), sum(dfop$Ronaldo == 1), sum(dfop$Smokedetectors == 1), sum(dfop$Ronaldo == 2),  sum(dfop$Smokedetectors == 2)),Agreement = c("pro", "pro", "contra", "contra", "pro", "pro", "contra", "contra"))
+  
+ggplot(data = df, aes(x, y, group = Agreement)) +
+  geom_col(aes(fill = Agreement)) +
+  geom_text(aes(label = y), position = position_stack(vjust = 0.5)) +
+  labs(x="Topic", y="Count") +
+  scale_fill_manual(values=agreement_palette(2)) +
+  theme_grey()
+
+ggsave("InitialOpinion.pdf", width = 7, height = 4)
+```
+
+
+Plotting Mean Comparisons
+```{r plot-further}
+variable_set <- c(
+            "FB_schon_gehört",
+            "FB_glaube_existiert",
+            "FB_interessante_Beiträge",
+            "FB_betrifft_persönlich",
+            "FB_Problem",
+            "FB_bewusstes_Vorgehen"
+            )
+
+label_set <- c(
+              "sg",
+              "existier",
+              "interessant",
+              "Betrifft per",
+              "problem",
+              "bewusst"
+              )
+
+make_variable_labels <- function(x) {
+  factor(x, levels = variable_set,
+            labels = label_set
+            )
+}
+
+data %>% 
+  dplyr::select(variable_set) %>% 
+  map_df(as.numeric) %>% 
+  psych::describe() %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  mutate (variablename = make_variable_labels(rowname)) -> plot_data
 ```
