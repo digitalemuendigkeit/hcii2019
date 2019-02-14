@@ -183,12 +183,12 @@ variable_set <- c(
             )
 
 label_set <- c(
-              "sg",
-              "existier",
-              "interessant",
-              "Betrifft per",
-              "problem",
-              "bewusst"
+              "heard about the filter bubbles",
+              "believe the filter bubble exists",
+              "filter bubble displays only interesting posts",
+              "filter bubble affects me personally",
+              "filer bubble is a problem",
+              "take action against the filter bubble"
               )
 
 make_variable_labels <- function(x) {
@@ -219,10 +219,10 @@ plot_data %>%
   scale_y_continuous(limits = c(0,5), labels = 1:6) +
   geom_col() +
   geom_errorbar(width = 0.3) +
-  labs(x="Variables", y="Mean of Scale (1-6)", 
-       title="Most user have heard of the filter bubble",
-       subtitle = "Different measures of Filter buble awareness",
-       caption = "Errorbar denots the 95% confidence intervall of the mean.") +
+  labs(x="Variables", y="Mean of agreement (1-6)", 
+       title="Most user know the pheonomenon filter bubble",
+       subtitle = "Different measures of filter bubble awareness",
+       caption = "Errorbars denote the 95% confidence intervall of the mean.") +
   guides(fill = FALSE) +
   coord_flip() +
   #scale_fill_brewer(palette = "Spectral") + 
