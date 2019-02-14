@@ -24,6 +24,8 @@ library(sjPlot)
 library(forcats)
 library(corrplot)
 library(hcictools)
+library(ggplot2)
+library(likert)
 
 source("../survemonky_helper.R")
 ```
@@ -68,7 +70,7 @@ data$education <- factor(data$education,
 
 
 data <- data %>% mutate_at(vars(starts_with("big5")), srvmky_convert_factor, rev = T )
-data <- data %>% mutate_at(vars(starts_with("FB_")), srvmky_convert_factor, rev = T ) 
+#data <- data %>% mutate_at(vars(starts_with("FB_")), srvmky_convert_factor, rev = T ) 
 data <- data %>% mutate_at(vars(starts_with("FBV_")), srvmky_convert_factor, rev = T )
 
 # filter incomplete responses
@@ -159,6 +161,17 @@ Here we compute the results
 ## Descriptive Statistics
 ```{r descriptive}
 psych::describe(data)
+```
+
+## Reasons to use Facebook
+Here we look at the reasons to use Facebook
+```{r XXX}
+
+#barplot(table(data$FB_schon_gehört, data$FB_glaube_existiert, data$FB_betrifft_persönlich, data$FB_Problem, data$FB_interessante_Beiträge, data$FB_bewusstes_Vorgehen),col=c("black","green","red"),
+#ylab="Anzahl Personen")
+ggplot(data, aes(x=data$FB_interessante_Beiträge)) +
+  geom_bar()
+
 ```
 
 ### Gender Differences for Personality
