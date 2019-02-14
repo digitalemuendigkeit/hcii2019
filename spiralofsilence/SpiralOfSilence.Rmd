@@ -13,11 +13,12 @@ library(tidyverse)
 library(haven)
 library(sjlabelled)
 library(psych)
+library(data.table)
 ```
 
 First we clean our SPSS output files. For this purpose we remove identifying information..
 ```{r data-cleaning}
-raw <- read_sav("data/SpiralofSilence_raw.sav")
+raw <- read_sav("data/SpiralofSilence.sav")
 
 
 # rename variables ---- 
@@ -43,7 +44,7 @@ if(!file.exists(codebook_filename)){
 # select required variables ----
   raw[,c(-1:-10)] -> c_df
   
-  c_df$filtervar <- ifelse(is.na(c_df$topSmokedet_neg | c_df$topSmokedet_pos), NA, 1)
+  c_df$filtervar <- ifelse(is.na(c_df$topSmokedet_contra | c_df$topSmokedet_pro), NA, 1)
   
   c_df %>% filter(!is.na(filtervar)) -> data
   
@@ -64,7 +65,7 @@ if(!file.exists(codebook_filename)){
   }
   
   
-  data <- data %>% mutate_at(vars(starts_with("big5")), convert_to_factor, rev = T )
+  data <- data %>% mutate_at(vars(starts_with("Big5")), convert_to_factor, rev = T )
   data <- data %>% mutate_at(vars(starts_with("fb_")), convert_to_factor, rev = T )  
   
   
@@ -86,30 +87,45 @@ if(!file.exists(codebook_filename)){
   
   data %>% select(-starts_with("big5"))
   
-  smusershigh <- filter(data,data$FrequencyOfSMUse > 4)
-  smuserslow <- filter(data,data$FrequencyOfSMUse <= 4)
-  
-  data$topToilets_neg[data$topToilets_neg != "2"] <- 1
-  
-  
-  add_labels(data$topToilets_neg, labels = c("Positiv" = 1, "Negativ" = 2))
-  get_labels(data$topToilets_neg)
-  
-  
+
+  data <- data %>% mutate_if(~ any(is.na(.x)),~ if_else(is.na(.x),0,as.numeric(.x)))
+  data <- data %>% mutate_at(vars(starts_with("top")), as.factor)
+
 ```
-# Abstract
-- In Social Media services such as Facebook, users encounter a wide range of other user's opinions on subjects concerning various topics
-- Users have to evaluate the correctness and their opinion perceiption by themselves, leading to effects like the spiral silence and filter bubbles
-- Occurence of Fake News and Social Bots who try to change Meinungsklima through Vortäuschen von Mehrheiten additionally increases difficulty of evaluation process
-- Digital responsibility is key for handling these effects and forming an independent opinion
-- We wanted to investigate, if the opinion of a user on certain topics changes, if he is confronted with negative or positive comments
-- Mitläufereffekt, Schweigespirale auch in Social Media?
-- Examined user factors: Gender, Big5 (Openness, extraversion, neuroticism), Frequency of Social Media Use
-- Scenarios: 8 Facebook Posts, 4 topics: public toilets, Steuern für ungesunde Lebensmittel, Christiano Ronaldo, Rauchmelderpflicht
-- Neutrale Themen vs. kontrovers diskutierte Themen, Vorabfrage der Meinung des Probanden zum jeweiligen Thema
-- Bei positiver Einstellung: Anzeige eines Beitrags zu dem jeweiligen Thema mit einem positiven und vier negativen Kommentaren
-- Am Ende: Erneute Abfrage der Einstellung des Probanden, hat er seine Meinung geändert?
-- Hypotheses: User factors do influence possible opinion change
-- Results: No measurable effects on most topics and user factors, only reliable correlation: opinion change on topic Ronaldo and openness
-- Methodenreflexion: Very young aged (27.5), probably high experienced in Social Media Use
-- Outlook: Opinion change could be dependent on emotional component of topic. Our prediction: Probanden lassen sich bei emotionaleren Themen tendenzielln nciht beeinflussen -> Probanden haben bereits eine Digitale Mündigkeit entwickelt
+
+GGPlots
+```{r plotting}
+
+SMdata <- data[,c(3:8)]
+
+### Sum the data using apply & use this for beautiful barplot
+sumdata <- data.frame(value=apply(SMdata,2,sum))
+sumdata$key <- c("Facebook", "Twitter", "Instagram","Google Plus","Snapchat","Youtube")
+
+SMPlot <- ggplot(data=sumdata, aes(x=reorder(key, -value), y=value, fill=key)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(x=key,y=value, label=value),vjust=-1) +
+  xlab("Social media service") +
+  ylab("User count") +
+  ylim(0,160) +
+  theme_grey()
+
+SMPlot + guides(fill=FALSE)
+
+initialopinion <- data.frame(PublicToilets=data$topToilets_opinion,Foodtaxes=data$topFood_opinion,Ronaldo=data$topRonaldo_opinion,Smokedetectors=data$topSmokedet_opinion)
+
+opinionsums <- data.frame(sum(initialopinion$PublicToilets), sum(initialopinion$Foodtaxes))
+
+initialopinion$row <- seq_len(nrow(initialopinion))
+initialopinion <- melt(initialopinion, id.vars = "row")
+initialopinion$value <- factor(initialopinion$value)
+ggplot(initialopinion, aes(x = variable, fill=value)) + 
+  geom_bar() +
+#  geom_text(aes(x=variable,y=value, label=value),vjust=-1) +
+#  scale_y_continuous() +
+  #xlab("\nTopic") +
+  #ylab("Opinion\n") +
+ # guides(fill = FALSE) +
+  theme_grey()
+
+```
