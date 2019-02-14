@@ -60,19 +60,19 @@ fb_Beiträge_unachtsam_wer_liked_teilt;Ich achte nicht darauf, wer die angezeigt
 fb_Beiträge_meine_Meinung_like_ich;Beiträge, die meine Meinung widerspiegeln, like ich.
 fb_Beiträge_unvollständig_gelesen_like_ich;Ich like auch Beiträge, die ich nicht vollständig gelesen habe.
 fb_Beiträge_nicht_angeklickt_like_ich;Ich like auch Beiträge, die ich nicht angeklickt habe.
-FB_schon_gehört;Ich habe schon vorher von der Theorie der Filterblase gehört.
-FB_glaube_existiert;Ich glaube, dass die Filterblase existiert.
-FB_betrifft_persönlich;Die Filterblase betrifft mich persönlich.
-FB_Problem;Die Filterblase ist ein Problem.
-FB_interessante_Beiträge;Die Filterblase sorgt dafür, dass mir nur interessante Beiträge angezeigt werden.
-FB_bewusstes_Vorgehen;Ich gehe bewusst gegen die Filterblase vor.
+FiB_schon_gehört;Ich habe schon vorher von der Theorie der Filterblase gehört.
+FiB_glaube_existiert;Ich glaube, dass die Filterblase existiert.
+FiB_betrifft_persönlich;Die Filterblase betrifft mich persönlich.
+FiB_Problem;Die Filterblase ist ein Problem.
+FiB_interessante_Beiträge;Die Filterblase sorgt dafür, dass mir nur interessante Beiträge angezeigt werden.
+FiB_bewusstes_Vorgehen;Ich gehe bewusst gegen die Filterblase vor.
 FBV_Loeschen;Ich lösche den Verlauf des Browsers und meine Cookies.
 FBV_Incognito;Ich verwende die Incognito-Funktion.
 FBV_Vielfalt_erzwingen;Ich klicke und like viele verschiedene Beiträge, um Vielfalt zu erzwingen.
 FBV_Explorer;Ich benutze den “Explore”-Button bei Facebook, der mir verschiedene News anzeigt.
 FBV_deabonnieren;Ich deabonniere einige meiner Freunde/Seiten.
-FB_Wunsch_Werkzeug;Ich würde mir ein Werkzeug wünschen, welches mir verschiedene Themen, Meinungen und Ideen aufzeigt. 
-FB_Wunsch_Newsfeed;Ich würde mir einen ungefilterten, chronologischen Newsfeed wünschen.
+Wunsch_Werkzeug;Ich würde mir ein Werkzeug wünschen, welches mir verschiedene Themen, Meinungen und Ideen aufzeigt. 
+Wunsch_Newsfeed;Ich würde mir einen ungefilterten, chronologischen Newsfeed wünschen.
 Anmerkungen;Vielen Dank für Ihre Teilnahme!Haben Sie Anmerkungen zur Umfrage? Teilen Sie uns diese gern mit.
 p0001;Page 1
 p0002;Page 2
