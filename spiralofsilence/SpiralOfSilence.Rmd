@@ -15,84 +15,27 @@ library(sjlabelled)
 library(psych)
 library(data.table)
 library(hcictools)
+library(summarytools)
 ```
 
 First we clean our SPSS output files. For this purpose we remove identifying information..
 ```{r data-cleaning}
 raw <- read_sav("data/SpiralofSilence.sav")
 
+# filter incomplete responses  
+raw[,c(-1:-10)] %>% filter((`filter_$`) > 0) -> data
 
-# rename variables ---- 
-codebook_filename <- "codebook.csv"
+data
+# factors and ordinal data
+data$Age <- as.numeric(data$Age)
+data$Gender <- as.factor(data$Gender)
 
-if(!file.exists(codebook_filename)){
-  variable_names <- names(raw)
-  label_names <- get_label(raw)
+# calculate factors and scales
 
-  codebook <- data.frame(variable_names, label_names)
-  print("test")
-  write_delim(codebook, path = codebook_filename, delim = ";")
-} else {
-  codebook <-read_delim(codebook_filename, delim=";")
-}
-
-  # Change variable labels to those from the codebook.csv
-  names(raw) <- codebook$variable_names
-  
-  names(raw)
-  
-
-# select required variables ----
-  raw[,c(-1:-10)] -> c_df
-  
-  c_df$filtervar <- ifelse(is.na(c_df$topSmokedet_contra | c_df$topSmokedet_pro), NA, 1)
-  
-  c_df %>% filter(!is.na(filtervar)) -> data
-  
-  data
-  # factors and ordinal data
-  data$Age <- as.numeric(data$Age)
-  data$Gender <- as.factor(data$Gender)
-  
-  
-  # Function to convert factor variabls from surveymonkey spss file to usable factors
-  convert_to_factor <- function(x, ordered = T, rev = F) {
-      result <- factor(x, labels = get_labels(x), 
-                       levels = 1:length(get_labels(x)), ordered = ordered )
-      if(rev) {
-        result <- fct_rev(result)
-      }
-      result
-  }
-  
-  
-  data <- data %>% mutate_at(vars(starts_with("Big5")), convert_to_factor, rev = T )
-  data <- data %>% mutate_at(vars(starts_with("fb_")), convert_to_factor, rev = T )  
-  
-  
-  # filter incomplete responses
-  
-  codebook[22:27,]$label_names
-  
-  # calculate factors and scales
-  
-  key_list <- list(b5_o = list("big5_o1", "big5_o2"),
-                   b5_e = list("-big5_e1", "big5_e2"),
-                   b5_n = list("-big5_n1", "big5_n2"))
-  
-  scores <- psych::scoreItems(key_list, data, min = 1, max = 6, impute = "mean")  
-  
-  scores
-  
-  data <- data %>% cbind(scores$scores) 
-  
-  data %>% select(-starts_with("big5"))
-  
-
-  data <- data %>% mutate_if(~ any(is.na(.x)),~ if_else(is.na(.x),0,as.numeric(.x)))
-  data <- data %>% mutate_at(vars(starts_with("top")), as.factor)
-
+data <- data %>% mutate_if(~ any(is.na(.x)),~ if_else(is.na(.x),0,as.numeric(.x)))
+data <- data %>% mutate_at(vars(starts_with("top")), as.factor)
 ```
+
 
 GGPlot for Social Media Usage
 ```{r plot-smuse}
@@ -119,31 +62,63 @@ ggsave("SocialMediaUse.pdf",width = 7, height = 4)
 ```
 
 
-Plotting the initial opinion
+Plotting the opinion change
 ```{r plot-initopinion}
 
 rwthcolors <- hcictools::rwth.colorpalette()
-agreement_palette <- colorRampPalette(c(rwthcolors$red,"white",rwthcolors$green))
+agreement_palette <- colorRampPalette(c(rwthcolors$green,"white",rwthcolors$red))
 
 # Actual code for building the stacked barplot without working text labels
+data %>% 
+  select(toilet = ToiletsOpFinal, food = FoodOpFinal, ronaldo = RonaldoOpFinal, smoke = SmokedetOpFinal) %>% 
+  add_rownames("id") %>% 
+  gather(variable, value, -id) %>% 
+  rename (final = value) -> final_data
+
+data %>% 
+  select(toilet = topToilets_opinion, food = topFood_opinion, ronaldo = topRonaldo_opinion, smoke =topSmokedet_opinion) %>% 
+  add_rownames("id") %>% 
+  gather(variable, value, -id) %>% 
+  rename(pre = value) -> pre_data
+
+pre_data %>% left_join(final_data) %>% 
+  gather(state , value, -variable, -id) %>% 
+  mutate(variable = factor(variable, levels=c("toilet","food","ronaldo","smoke"), labels = c("Toilet", "Food", "Ronaldo", "Smoke") ), 
+         state=factor(state, levels=c("pre", "final")), value=factor(value, levels=c("2","1"), labels = c("Agree", "Disagree"))) %>%
+  group_by(state,variable, value) %>% 
+  summarize(opinion = (sum(as.numeric(value)))) %>% 
+  ggplot() + 
+  aes(x = state, y = opinion, fill = value) + 
+  geom_bar(stat = "identity") + 
+  facet_wrap(~variable, nrow=1) +
+  geom_text(aes(label = opinion), position = position_stack(vjust = 0.5)) +
+  scale_fill_manual(values=agreement_palette(2)) +
+  theme_grey()
+NULL
+
+
+
+```
+
+```{r}
+# Code for plotting stacked barplot without grouping
 initOp <- data.frame(PublicToilets=data$topToilets_opinion,Foodtaxes=data$topFood_opinion,
                      Ronaldo=data$topRonaldo_opinion,Smokedetectors=data$topSmokedet_opinion)
 
 initOp$row <- seq_len(nrow(initOp))
 initOp <- melt(initOp, id.vars = "row")
-initOp$value <- factor(initOp$value)
+initOp$value <- as.character(initOp$value)
 
 ggplot(initOp, aes(x = variable, fill=value)) + 
   geom_bar() +
   scale_fill_manual(values=agreement_palette(2)) +
   theme_grey()
 
-
 # Crappy Code, but works for now for the stacked barplot with labels
 dfop <- data.frame(PublicToilets=data$topToilets_opinion,Foodtaxes=data$topFood_opinion,
                      Ronaldo=data$topRonaldo_opinion,Smokedetectors=data$topSmokedet_opinion)
 
-df <- data.frame(x = factor(c("1. Public Toilets", "2. Food Taxes", "1. Public Toilets", "2. Food Taxes", "3. Ronaldo", "4. Smoke detectors", "3. Ronaldo", "4. Smoke detectors")), y = c(sum(dfop$PublicToilets == 1), sum(dfop$Foodtaxes == 1),  sum(dfop$PublicToilets == 2), sum(dfop$Foodtaxes == 2), sum(dfop$Ronaldo == 1), sum(dfop$Smokedetectors == 1), sum(dfop$Ronaldo == 2),  sum(dfop$Smokedetectors == 2)),Agreement = c("pro", "pro", "contra", "contra", "pro", "pro", "contra", "contra"))
+df <- data.frame(x = factor(c("1. Public Toilets", "1. Public Toilets", "2. Food Taxes", "2. Food Taxes", "3. Ronaldo", "4. Smoke detectors", "3. Ronaldo", "4. Smoke detectors")), y = c(sum(dfop$PublicToilets == 1),  sum(dfop$PublicToilets == 2), sum(dfop$Foodtaxes == 1), sum(dfop$Foodtaxes == 2), sum(dfop$Ronaldo == 1), sum(dfop$Smokedetectors == 1), sum(dfop$Ronaldo == 2),  sum(dfop$Smokedetectors == 2)),Agreement = c("1", "2", "2", "1", "2", "1", "2", "1"))
   
 ggplot(data = df, aes(x, y, group = Agreement)) +
   geom_col(aes(fill = Agreement)) +
