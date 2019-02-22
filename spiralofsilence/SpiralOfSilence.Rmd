@@ -62,13 +62,13 @@ ggsave("SocialMediaUse.pdf",width = 7, height = 4)
 ```
 
 
-Plotting the opinion change
+Plotting the initial/final opinion
 ```{r plot-initopinion}
 
 rwthcolors <- hcictools::rwth.colorpalette()
 agreement_palette <- colorRampPalette(c(rwthcolors$green,"white",rwthcolors$red))
 
-# Actual code for building the stacked barplot without working text labels
+# Building a dataframe from initial and final opinion variables
 data %>% 
   select(toilet = ToiletsOpFinal, food = FoodOpFinal, ronaldo = RonaldoOpFinal, smoke = SmokedetOpFinal) %>% 
   add_rownames("id") %>% 
@@ -79,58 +79,65 @@ data %>%
   select(toilet = topToilets_opinion, food = topFood_opinion, ronaldo = topRonaldo_opinion, smoke =topSmokedet_opinion) %>% 
   add_rownames("id") %>% 
   gather(variable, value, -id) %>% 
-  rename(pre = value) -> pre_data
+  rename(initial = value) -> pre_data
 
+# Joining the dataframes for creating the plot
 pre_data %>% left_join(final_data) %>% 
   gather(state , value, -variable, -id) %>% 
-  mutate(variable = factor(variable, levels=c("toilet","food","ronaldo","smoke"), labels = c("Paying usage fees \nfor public toilets", "Higher taxation of \nunhealthy food", "Sympathy for football\nplayer Ronaldo", "Obligatory installation\nof smoke detectors") ), 
-         state=factor(state, levels=c("pre", "final")), value=factor(value, levels=c("2","1"), labels = c("Agree", "Disagree"))) %>%
+  mutate(variable = factor(variable, levels=c("toilet","food","ronaldo","smoke"), 
+                           labels = c("Paying usage fees \nfor public toilets", "Higher taxation of \nunhealthy food", 
+                                      "Sympathy for football\nplayer Ronaldo", "Obligatory installation\nof smoke detectors") ), 
+         state=factor(state, levels=c("initial", "final")), value=factor(value, levels=c("2","1"), labels = c("Approval", "Refusal"))) %>%
   group_by(state,variable, value) %>% 
   summarise(opinion = n()) %>% 
   ggplot() + 
   aes(x = state, y = opinion, fill = value) + 
   geom_bar(stat = "identity") + 
   facet_wrap(~variable, nrow=1) +
-  geom_text(aes(label = opinion), position = position_stack(vjust = 0.5)) +
+  geom_text(aes(label = scales::percent(opinion/163)), position = position_stack(vjust = 0.5)) +
   scale_fill_manual(values=agreement_palette(2)) +
   labs(x="Topics and state", y="Opinion distribution") +
   theme_grey() +
-  guides(guide_legend(title = "Opinion"))
+  guides(fill=guide_legend(title = "Opinion"))
 
-ggsave("Opinionchange.pdf")
-
-
+ggsave("Opinionchange.pdf",width = 7, height = 4)
 
 ```
 
-```{r}
-# Code for plotting stacked barplot without grouping
-initOp <- data.frame(PublicToilets=data$topToilets_opinion,Foodtaxes=data$topFood_opinion,
-                     Ronaldo=data$topRonaldo_opinion,Smokedetectors=data$topSmokedet_opinion)
 
-initOp$row <- seq_len(nrow(initOp))
-initOp <- melt(initOp, id.vars = "row")
-initOp$value <- as.character(initOp$value)
+Plotting the opinion change directions
+```{r plot-opchangedirection}
 
-ggplot(initOp, aes(x = variable, fill=value)) + 
+rwthcolors <- hcictools::rwth.colorpalette()
+agreement_palette2 <- colorRampPalette(c(rwthcolors$red,"white",rwthcolors$green))
+
+# Building a dataframe from initial and final opinion variables
+data %>% 
+  select(toilet = ToiletsOpChange, food = FoodOpChange, ronaldo = RonaldoOpChange, smoke = SmokedetOpChange) %>% 
+  add_rownames("id") %>% 
+  gather(variable, value, -id) %>% 
+  rename (direction = value, topic = variable) %>%
+  subset(direction != 0) %>% 
+  mutate(topic = factor(topic, levels=c("toilet","food","ronaldo","smoke"), 
+                           labels = c("Paying usage fees \nfor public toilets", "Higher taxation of \nunhealthy food", 
+                                      "Sympathy for football\nplayer Ronaldo", "Obligatory installation\nof smoke detectors") ),
+    direction = factor(direction, levels=c("1", "2"), labels=c("From approval\nto rejection","From rejection\nto approval"))) %>% 
+  arrange(topic, direction) %>% 
+  ggplot() +
+  aes(x=fct_rev(topic), fill=direction, order= -as.numeric(direction)) +
   geom_bar() +
-  scale_fill_manual(values=agreement_palette(2)) +
-  theme_grey()
+  geom_text(aes(label=..count..),stat="count",position=position_stack(0.5)) +
+  scale_fill_manual(values=agreement_palette2(2)) +
+  scale_color_discrete("2", "1") +
+  labs(x="Topics", y="Total opinion changers") +
+  coord_flip() + 
+  guides(fill = guide_legend(title="Direction of\nopinion change",reverse = TRUE)) +
+  NULL
 
-# Crappy Code, but works for now for the stacked barplot with labels
-dfop <- data.frame(PublicToilets=data$topToilets_opinion,Foodtaxes=data$topFood_opinion,
-                     Ronaldo=data$topRonaldo_opinion,Smokedetectors=data$topSmokedet_opinion)
 
-df <- data.frame(x = factor(c("1. Public Toilets", "1. Public Toilets", "2. Food Taxes", "2. Food Taxes", "3. Ronaldo", "4. Smoke detectors", "3. Ronaldo", "4. Smoke detectors")), y = c(sum(dfop$PublicToilets == 1),  sum(dfop$PublicToilets == 2), sum(dfop$Foodtaxes == 1), sum(dfop$Foodtaxes == 2), sum(dfop$Ronaldo == 1), sum(dfop$Smokedetectors == 1), sum(dfop$Ronaldo == 2),  sum(dfop$Smokedetectors == 2)),Agreement = c("1", "2", "2", "1", "2", "1", "2", "1"))
-  
-ggplot(data = df, aes(x, y, group = Agreement)) +
-  geom_col(aes(fill = Agreement)) +
-  geom_text(aes(label = y), position = position_stack(vjust = 0.5)) +
-  labs(x="Topic", y="Count") +
-  scale_fill_manual(values=agreement_palette(2)) +
-  theme_grey()
 
-ggsave("InitialOpinion.pdf", width = 7, height = 4)
+ggsave("OpinionchangeDirection.pdf",width = 7, height = 4)
+
 ```
 
 
