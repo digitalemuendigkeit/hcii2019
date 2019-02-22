@@ -26,6 +26,12 @@ library(corrplot)
 library(hcictools)
 library(ggplot2)
 library(likert)
+library(apastats)
+library(apaTables)
+library(psych)
+library(ggthemes)
+library(scales)
+library(jmv)
 
 source("../survemonky_helper.R")
 ```
@@ -406,9 +412,14 @@ psych::alpha(corrdata, list("b5_o", "b5_n", "b5_c"))
 Here we look at the relationship between the awareness of filter bubbles and possible avoidannce strategies against filter bubbles
 ```{r Awareness and avoidance strategies}
 
-data %>% select(starts_with("FiB")) %>% 
+data %>%  select(starts_with("FiB"), "FBV_Loeschen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren") %>% 
   mutate_if(is.ordered, as.numeric) %>% 
-  hcictools::cor.matrix.plot()
+  hcictools::cor.matrix.plot() #%>% apa.cor.table() %>% a_table()
+
+data2 <- data %>% select(starts_with("FiB"), "FBV_Loeschen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren")
+
+print(apa.cor.table(data2, filename = NA, table.number = NA, show.conf.interval = TRUE, landscape = TRUE), type='latex')
+
 
 ```
 
@@ -420,6 +431,10 @@ data %>% select(starts_with("FiB")) %>%
 ## correlations
 
 ### 1
+
+
+
+
 
 
 
