@@ -83,18 +83,21 @@ data %>%
 
 pre_data %>% left_join(final_data) %>% 
   gather(state , value, -variable, -id) %>% 
-  mutate(variable = factor(variable, levels=c("toilet","food","ronaldo","smoke"), labels = c("Toilet", "Food", "Ronaldo", "Smoke") ), 
+  mutate(variable = factor(variable, levels=c("toilet","food","ronaldo","smoke"), labels = c("Paying usage fees \nfor public toilets", "Higher taxation of \nunhealthy food", "Sympathy for football\nplayer Ronaldo", "Obligatory installation\nof smoke detectors") ), 
          state=factor(state, levels=c("pre", "final")), value=factor(value, levels=c("2","1"), labels = c("Agree", "Disagree"))) %>%
   group_by(state,variable, value) %>% 
-  summarize(opinion = (sum(as.numeric(value)))) %>% 
+  summarise(opinion = n()) %>% 
   ggplot() + 
   aes(x = state, y = opinion, fill = value) + 
   geom_bar(stat = "identity") + 
   facet_wrap(~variable, nrow=1) +
   geom_text(aes(label = opinion), position = position_stack(vjust = 0.5)) +
   scale_fill_manual(values=agreement_palette(2)) +
-  theme_grey()
-NULL
+  labs(x="Topics and state", y="Opinion distribution") +
+  theme_grey() +
+  guides(guide_legend(title = "Opinion"))
+
+ggsave("Opinionchange.pdf")
 
 
 
