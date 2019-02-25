@@ -32,8 +32,10 @@ library(psych)
 library(ggthemes)
 library(scales)
 library(jmv)
+library(papaja)
 
 source("../survemonky_helper.R")
+source("helpers.R")
 ```
 
 # Data Cleaning
@@ -407,7 +409,6 @@ psych::alpha(corrdata, list("b5_o", "b5_n", "b5_c"))
 ### age
 
 
-
 ### Awareness of filter bubbles and Action against filter bubbles
 Here we look at the relationship between the awareness of filter bubbles and possible avoidannce strategies against filter bubbles
 ```{r Awareness and avoidance strategies}
@@ -418,11 +419,138 @@ data %>%  select(starts_with("FiB"), "FBV_Loeschen", "FBV_Incognito", "FBV_Vielf
 
 data2 <- data %>% select(starts_with("FiB"), "FBV_Loeschen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren")
 
-print(apa.cor.table(data2, filename = NA, table.number = NA, show.conf.interval = TRUE, landscape = TRUE), type='latex')
+#print(apa.cor.table(data2, filename = NA, table.number = NA, show.conf.interval = TRUE, landscape = TRUE), type='latex')
+
+AA_table <- data %>% select(starts_with("FiB"), "FBV_Loeschen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren") %>% mutate_if(is.ordered, as.numeric) %>% apa.cor.table() %>% a_table()
+
+
+
+data %>% select(starts_with("FiB"), "FBV_Loeschen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren") %>% 
+  mutate_if(is.ordered, as.numeric) -> corrdata
+
+cor.test(data = corrdata, ~ FiB_schon_gehört + FBV_Loeschen) -> hypo_c1
+cor.test(data = corrdata, ~ FiB_schon_gehört + FBV_Incognito) -> hypo_c2
+cor.test(data = corrdata, ~ FiB_schon_gehört + FBV_Vielfalt_erzwingen) -> hypo_c3
+cor.test(data = corrdata, ~ FiB_schon_gehört + FBV_Explorer) -> hypo_c4
+cor.test(data = corrdata, ~ FiB_schon_gehört + FBV_deabonnieren) -> hypo_c5
+
+cor.test(data = corrdata, ~ FiB_glaube_existiert + FBV_Loeschen) -> hypo_c6
+cor.test(data = corrdata, ~ FiB_glaube_existiert + FBV_Incognito) -> hypo_c7
+cor.test(data = corrdata, ~ FiB_glaube_existiert + FBV_Vielfalt_erzwingen) -> hypo_c8
+cor.test(data = corrdata, ~ FiB_glaube_existiert + FBV_Explorer) -> hypo_c9
+cor.test(data = corrdata, ~ FiB_glaube_existiert + FBV_deabonnieren) -> hypo_c10
+
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + FBV_Loeschen) -> hypo_c11
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + FBV_Incognito) -> hypo_c12
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + FBV_Vielfalt_erzwingen) -> hypo_c13
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + FBV_Explorer) -> hypo_c14
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + FBV_deabonnieren) -> hypo_c15
+
+cor.test(data = corrdata, ~ FiB_Problem + FBV_Loeschen) -> hypo_c16
+cor.test(data = corrdata, ~ FiB_Problem + FBV_Incognito) -> hypo_c17
+cor.test(data = corrdata, ~ FiB_Problem + FBV_Vielfalt_erzwingen) -> hypo_c18
+cor.test(data = corrdata, ~ FiB_Problem + FBV_Explorer) -> hypo_c19
+cor.test(data = corrdata, ~ FiB_Problem + FBV_deabonnieren) -> hypo_c20
+
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + FBV_Loeschen) -> hypo_c21
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + FBV_Incognito) -> hypo_c22
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + FBV_Vielfalt_erzwingen) -> hypo_c23
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + FBV_Explorer) -> hypo_c24
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + FBV_deabonnieren) -> hypo_c25
+
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + FBV_Loeschen) -> hypo_c26
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + FBV_Incognito) -> hypo_c27
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + FBV_Vielfalt_erzwingen) -> hypo_c28
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + FBV_Explorer) -> hypo_c29
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + FBV_deabonnieren) -> hypo_c30
+
+apastats::describe.r(hypo_c1, type="latex")
+apastats::describe.r(hypo_c2, type="latex")
+apastats::describe.r(hypo_c3, type="latex")
+apastats::describe.r(hypo_c4, type="latex")
+apastats::describe.r(hypo_c5, type="latex")
+
+apastats::describe.r(hypo_c6, type="latex")
+apastats::describe.r(hypo_c7, type="latex")
+apastats::describe.r(hypo_c8, type="latex")
+apastats::describe.r(hypo_c9, type="latex")
+apastats::describe.r(hypo_c10, type="latex")
+
+apastats::describe.r(hypo_c11, type="latex")
+apastats::describe.r(hypo_c12, type="latex")
+apastats::describe.r(hypo_c13, type="latex")
+apastats::describe.r(hypo_c14, type="latex")
+apastats::describe.r(hypo_c15, type="latex")
+
+apastats::describe.r(hypo_c16, type="latex")
+apastats::describe.r(hypo_c17, type="latex")
+apastats::describe.r(hypo_c18, type="latex")
+apastats::describe.r(hypo_c19, type="latex")
+apastats::describe.r(hypo_c20, type="latex")
+
+apastats::describe.r(hypo_c21, type="latex")
+apastats::describe.r(hypo_c22, type="latex")
+apastats::describe.r(hypo_c23, type="latex")
+apastats::describe.r(hypo_c24, type="latex")
+apastats::describe.r(hypo_c25, type="latex")
+
+apastats::describe.r(hypo_c26, type="latex")
+apastats::describe.r(hypo_c27, type="latex")
+apastats::describe.r(hypo_c28, type="latex")
+apastats::describe.r(hypo_c29, type="latex")
+apastats::describe.r(hypo_c30, type="latex")
+
+lm(data = corrdata, formula = FiB_schon_gehört ~ FBV_Loeschen) -> hypo_lm1
+lm(data = corrdata, formula = FiB_schon_gehört ~ FBV_Incognito) -> hypo_lm2
+lm(data = corrdata, formula = FiB_schon_gehört ~ FBV_Incognito) -> hypo_lm3
+lm(data = corrdata, formula = FiB_schon_gehört ~ FBV_Incognito) -> hypo_lm4
+lm(data = corrdata, formula = FiB_schon_gehört ~ FBV_Incognito) -> hypo_lm5
 
 
 ```
 
+### Reasons to use Facebook and Action against filter bubbles
+```{r Reasons to use Facebook and avoidance strategies}
+data %>% select(starts_with("fb_um"), "FBV_Loeschen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren") %>% 
+  mutate_if(is.ordered, as.numeric) -> corrdata
+
+cor.test(data = corrdata, ~ fb_um_friends + FBV_Loeschen) -> hypo_c31
+cor.test(data = corrdata, ~ fb_um_friends + FBV_Incognito) -> hypo_c32
+cor.test(data = corrdata, ~ fb_um_friends + FBV_Vielfalt_erzwingen) -> hypo_c33
+cor.test(data = corrdata, ~ fb_um_friends + FBV_Explorer) -> hypo_c34
+cor.test(data = corrdata, ~ fb_um_friends + FBV_deabonnieren) -> hypo_c35
+
+cor.test(data = corrdata, ~ fb_um_newfriends + FBV_Loeschen) -> hypo_c36
+cor.test(data = corrdata, ~ fb_um_newfriends + FBV_Incognito) -> hypo_c37
+cor.test(data = corrdata, ~ fb_um_newfriends + FBV_Vielfalt_erzwingen) -> hypo_c38
+cor.test(data = corrdata, ~ fb_um_newfriends + FBV_Explorer) -> hypo_c39
+cor.test(data = corrdata, ~ fb_um_newfriends + FBV_deabonnieren) -> hypo_c40
+
+cor.test(data = corrdata, ~ fb_um_job + FBV_Loeschen) -> hypo_c41
+cor.test(data = corrdata, ~ fb_um_job + FBV_Incognito) -> hypo_c42
+cor.test(data = corrdata, ~ fb_um_job + FBV_Vielfalt_erzwingen) -> hypo_c43
+cor.test(data = corrdata, ~ fb_um_job + FBV_Explorer) -> hypo_c44
+cor.test(data = corrdata, ~ fb_um_job + FBV_deabonnieren) -> hypo_c45
+
+apastats::describe.r(hypo_c31, type="latex")
+apastats::describe.r(hypo_c32, type="latex")
+apastats::describe.r(hypo_c33, type="latex")
+apastats::describe.r(hypo_c34, type="latex")
+apastats::describe.r(hypo_c35, type="latex")
+
+apastats::describe.r(hypo_c36, type="latex")
+apastats::describe.r(hypo_c37, type="latex")
+apastats::describe.r(hypo_c38, type="latex")
+apastats::describe.r(hypo_c39, type="latex")
+apastats::describe.r(hypo_c40, type="latex")
+
+apastats::describe.r(hypo_c41, type="latex")
+apastats::describe.r(hypo_c42, type="latex")
+apastats::describe.r(hypo_c43, type="latex")
+apastats::describe.r(hypo_c44, type="latex")
+apastats::describe.r(hypo_c45, type="latex")
+
+```
 
 ### wishes regarding facebook
 
