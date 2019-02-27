@@ -88,6 +88,20 @@ data <- data %>% mutate_at(vars(starts_with("FBV_")), srvmky_convert_factor, rev
 codebook[16:25,]$label_names
 # calculate factors and scales
 
+agreement_english <- function(x) {
+  factor(x, levels = c("Stimme gar nicht zu",
+                            "Stimme nicht zu",
+                            "Stimme eher nicht zu",
+                            "Stimme eher zu",
+                            "Stimme zu",
+                            "Stimme vollkommen zu"),
+              labels = c("completely disagree",
+                         "disagree",
+                         "rather disagree",
+                         "rather agree",
+                         "agree",
+                         "completely agree"))
+}
 
 ```
 
@@ -219,8 +233,8 @@ agreement_palette <- colorRampPalette(c(rwthcolors$red,"white", rwthcolors$green
 
 plot_data %>% 
   ggplot() +
-  aes(x=reorder(variablename, mean), y = mean, fill = reorder(variablename, mean), 
-      ymin = mean - se * 1.96 , ymax = mean + se * 1.96) +
+  aes(x=reorder(variablename, mean), y = mean - 1, fill = reorder(variablename, mean), 
+      ymin = mean - 1 - se * 1.96 , ymax = mean - 1 + se * 1.96) +
   scale_y_continuous(limits = c(0,5), labels = 1:6) +
   geom_col(width = 0.8) +
   geom_errorbar(width = 0.3) +
@@ -235,23 +249,6 @@ plot_data %>%
   theme_bw() + 
   NULL
 
-
-
-
-agreement_english <- function(x) {
-  factor(x, levels = c("Stimme gar nicht zu",
-                            "Stimme nicht zu",
-                            "Stimme eher nicht zu",
-                            "Stimme eher zu",
-                            "Stimme zu",
-                            "Stimme vollkommen zu"),
-              labels = c("completely disagree",
-                         "disagree",
-                         "rather disagree",
-                         "rather agree",
-                         "agree",
-                         "completely agree"))
-}
 
 ggsave("Filterbubbles.pdf",  width = 7, height = 3)
 
@@ -309,8 +306,8 @@ data %>%
 
 plot_data %>% 
   ggplot() +
-  aes(x=reorder(variablename, mean), y = mean, fill = reorder(variablename, mean), 
-      ymin = mean - se * 1.96 , ymax = mean + se * 1.96) +
+  aes(x=reorder(variablename, mean), y = mean - 1, fill = reorder(variablename, mean), 
+      ymin = mean - 1 - se * 1.96 , ymax = mean - 1 + se * 1.96) +
   scale_y_continuous(limits = c(0,5), labels = 1:6) +
   geom_col(width = 0.8) +
   geom_errorbar(width = 0.3) +
@@ -371,8 +368,8 @@ agreement_palette <- colorRampPalette(c(rwthcolors$red,"white", rwthcolors$green
 
 plot_data %>% 
   ggplot() +
-  aes(x=reorder(variablename, mean), y = mean, fill = reorder(variablename, mean), 
-      ymin = mean - se * 1.96 , ymax = mean + se * 1.96) +
+  aes(x=reorder(variablename, mean), y = mean - 1, fill = reorder(variablename, mean), 
+      ymin = mean - 1 - se * 1.96 , ymax = mean - 1 + se * 1.96) +
   scale_y_continuous(limits = c(0,5), labels = 1:6) +
   geom_col(width = 0.8) +
   geom_errorbar(width = 0.3) +
@@ -437,8 +434,8 @@ agreement_palette <- colorRampPalette(c(rwthcolors$red,"white", rwthcolors$green
 
 plot_data %>% 
   ggplot() +
-  aes(x=reorder(variablename, mean), y = mean, fill = reorder(variablename, mean), 
-      ymin = mean - se * 1.96 , ymax = mean + se * 1.96) +
+  aes(x=reorder(variablename, mean), y = mean - 1, fill = reorder(variablename, mean), 
+      ymin = mean - 1 - se * 1.96 , ymax = mean - 1 + se * 1.96) +
   scale_y_continuous(limits = c(0,5), labels = 1:6) +
   geom_col(width = 0.5) +
   geom_errorbar(width = 0.3) +
