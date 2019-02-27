@@ -35,7 +35,7 @@ library(jmv)
 library(papaja)
 
 source("../survemonky_helper.R")
-source("helpers.R")
+source("../helpers.R")
 ```
 
 # Data Cleaning
