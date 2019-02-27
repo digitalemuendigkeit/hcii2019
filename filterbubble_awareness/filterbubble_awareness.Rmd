@@ -171,6 +171,7 @@ Here we compute the results
 psych::describe(data)
 ```
 
+
 ### Awareness of the filter bubble
 Here we look at the awareness of the filter bubble
 ```{r Awareness Filter bubble}
@@ -315,7 +316,7 @@ plot_data %>%
   geom_errorbar(width = 0.3) +
   labs(x="Variables", y="Means of agreement (1-6)", 
        title="The most commonly used strategy is clearing browser history",
-       subtitle = "Different prevention strategies against filter bubbles",
+       subtitle = "Different avoidance strategies against filterbubbles",
        caption = "Errorbars denote the 95% confidence intervall of the mean.") +
   guides(fill = FALSE) +
   coord_flip() +
@@ -325,6 +326,134 @@ plot_data %>%
   NULL
 
 ggsave("preventionStrategies.pdf", width = 7, height = 3)
+
+```
+
+### Big Five Personality
+Here we look at the Big Five personality frequencies of the participants
+```{r Big Five}
+variable_set3 <- c(
+  "b5_n",
+  "b5_e",
+  "b5_o",
+  "b5_a",
+  "b5_c"
+)
+
+label_set3 <- c(
+  "neuroticism",
+  "extraversion",
+  "openness",
+  "agreeableness",
+  "conscientiousness"
+)
+
+make_variable_labels <- function(x) {
+  factor(x, levels = variable_set3,
+            labels = label_set3
+            )
+}
+
+data %>% 
+  dplyr::select(variable_set3) %>% 
+  map_df(as.numeric) %>% 
+  psych::describe() %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  mutate (variablename = make_variable_labels(rowname)) -> plot_data
+
+library(hcictools)
+library(RColorBrewer)
+
+rwthcolors <- hcictools::rwth.colorpalette()
+
+agreement_palette <- colorRampPalette(c(rwthcolors$red,"white", rwthcolors$green))
+
+plot_data %>% 
+  ggplot() +
+  aes(x=reorder(variablename, mean), y = mean, fill = reorder(variablename, mean), 
+      ymin = mean - se * 1.96 , ymax = mean + se * 1.96) +
+  scale_y_continuous(limits = c(0,5), labels = 1:6) +
+  geom_col(width = 0.8) +
+  geom_errorbar(width = 0.3) +
+  labs(x="Variables", y="Means of agreement (1-6)", 
+       title="Participants are open-minded",
+       subtitle = "Big Five personality traits",
+       caption = "Errorbars denote the 95% confidence intervall of the mean.") +
+  guides(fill = FALSE) +
+  #coord_flip() +
+  scale_fill_brewer(palette = "Spectral") + 
+  #scale_fill_manual(values=agreement_palette(6)) +
+  theme_bw() + 
+  NULL
+
+ggsave("BigFive.pdf", width = 6, height = 4)
+
+```
+
+### Reasons to use Facebook
+Here we look at frequencies of the Facebook usage motives
+```{r Facebook usage motives}
+
+variable_set4 <- c(
+  "fb_um_friends",
+  "fb_um_newfriends",
+  "fb_um_job",
+  "fb_um_mich_informieren",
+  "fb_um_andere_informieren",
+  "fb_um_Meinung_zu_äußern"
+)
+
+
+label_set4 <- c(
+  "friends",
+  "new friends",
+  "job",
+  "my information",
+  "others information",
+  "opinion expression"
+)
+
+make_variable_labels <- function(x) {
+  factor(x, levels = variable_set4,
+            labels = label_set4
+            )
+}
+
+data %>% 
+  dplyr::select(variable_set4) %>% 
+  map_df(as.numeric) %>% 
+  psych::describe() %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  mutate (variablename = make_variable_labels(rowname)) -> plot_data
+
+library(hcictools)
+library(RColorBrewer)
+
+rwthcolors <- hcictools::rwth.colorpalette()
+
+agreement_palette <- colorRampPalette(c(rwthcolors$red,"white", rwthcolors$green))
+
+plot_data %>% 
+  ggplot() +
+  aes(x=reorder(variablename, mean), y = mean, fill = reorder(variablename, mean), 
+      ymin = mean - se * 1.96 , ymax = mean + se * 1.96) +
+  scale_y_continuous(limits = c(0,5), labels = 1:6) +
+  geom_col(width = 0.5) +
+  geom_errorbar(width = 0.3) +
+  labs(x="Variables", y="Means of agreement (1-6)", 
+       title="Participants use Facebook primarily to stay in touch with friends",
+       subtitle = "Different reasons to use Facebook for",
+       caption = "Errorbars denote the 95% confidence intervall of the mean.") +
+  guides(fill = FALSE) +
+  #coord_flip() +
+  scale_fill_brewer(palette = "Spectral") + 
+  #scale_fill_manual(values=agreement_palette(6)) +
+  theme_bw() + 
+  NULL
+
+ggsave("Facebook usage motives.pdf", width = 6, height = 4)
 
 ```
 
@@ -509,6 +638,98 @@ lm(data = corrdata, formula = FiB_schon_gehört ~ FBV_Incognito) -> hypo_lm5
 
 ```
 
+### Facebook usage motives and awareness of filter bubbles
+Here we look at the relationship between the Facebook usage motives and the awareness of filter bubbles 
+```{r Facebook usage motives abd awareness of filter bubbles}
+data %>% select(starts_with("FiB"), "fb_um_friends", "fb_um_newfriends", "fb_um_job", "fb_um_mich_informieren", "fb_um_andere_informieren", "fb_um_Meinung_zu_äußern") %>% 
+  mutate_if(is.ordered, as.numeric) -> corrdata
+
+cor.test(data = corrdata, ~ FiB_schon_gehört + fb_um_friends) -> hypo_c102
+cor.test(data = corrdata, ~ FiB_schon_gehört + fb_um_newfriends) -> hypo_c103
+cor.test(data = corrdata, ~ FiB_schon_gehört + fb_um_job) -> hypo_c104
+cor.test(data = corrdata, ~ FiB_schon_gehört + fb_um_mich_informieren) -> hypo_c105
+cor.test(data = corrdata, ~ FiB_schon_gehört + fb_um_andere_informieren) -> hypo_c106
+cor.test(data = corrdata, ~ FiB_schon_gehört + fb_um_Meinung_zu_äußern) -> hypo_c107
+
+cor.test(data = corrdata, ~ FiB_glaube_existiert + fb_um_friends) -> hypo_c108
+cor.test(data = corrdata, ~ FiB_glaube_existiert + fb_um_newfriends) -> hypo_c109
+cor.test(data = corrdata, ~ FiB_glaube_existiert + fb_um_job) -> hypo_c110
+cor.test(data = corrdata, ~ FiB_glaube_existiert + fb_um_mich_informieren) -> hypo_c111
+cor.test(data = corrdata, ~ FiB_glaube_existiert + fb_um_andere_informieren) -> hypo_c112
+cor.test(data = corrdata, ~ FiB_glaube_existiert + fb_um_Meinung_zu_äußern) -> hypo_c113
+
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + fb_um_friends) -> hypo_c114
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + fb_um_newfriends) -> hypo_c115
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + fb_um_job) -> hypo_c116
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + fb_um_mich_informieren) -> hypo_c117
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + fb_um_andere_informieren) -> hypo_c118
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + fb_um_Meinung_zu_äußern) -> hypo_c119
+
+cor.test(data = corrdata, ~ FiB_Problem + fb_um_friends) -> hypo_c120
+cor.test(data = corrdata, ~ FiB_Problem + fb_um_newfriends) -> hypo_c121
+cor.test(data = corrdata, ~ FiB_Problem + fb_um_job) -> hypo_c122
+cor.test(data = corrdata, ~ FiB_Problem + fb_um_mich_informieren) -> hypo_c123
+cor.test(data = corrdata, ~ FiB_Problem + fb_um_andere_informieren) -> hypo_c124
+cor.test(data = corrdata, ~ FiB_Problem + fb_um_Meinung_zu_äußern) -> hypo_c125
+
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + fb_um_friends) -> hypo_c126
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + fb_um_newfriends) -> hypo_c127
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + fb_um_job) -> hypo_c128
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + fb_um_mich_informieren) -> hypo_c129
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + fb_um_andere_informieren) -> hypo_c130
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + fb_um_Meinung_zu_äußern) -> hypo_c131
+
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + fb_um_friends) -> hypo_c132
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + fb_um_newfriends) -> hypo_c133
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + fb_um_job) -> hypo_c134
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + fb_um_mich_informieren) -> hypo_c135
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + fb_um_andere_informieren) -> hypo_c136
+cor.test(data = corrdata, ~ FiB_bewusstes_Vorgehen + fb_um_Meinung_zu_äußern) -> hypo_c137
+
+apastats::describe.r(hypo_c102, type="latex")
+apastats::describe.r(hypo_c103, type="latex")
+apastats::describe.r(hypo_c104, type="latex")
+apastats::describe.r(hypo_c105, type="latex")
+apastats::describe.r(hypo_c106, type="latex")
+apastats::describe.r(hypo_c107, type="latex")
+
+apastats::describe.r(hypo_c108, type="latex")
+apastats::describe.r(hypo_c109, type="latex")
+apastats::describe.r(hypo_c110, type="latex")
+apastats::describe.r(hypo_c111, type="latex")
+apastats::describe.r(hypo_c112, type="latex")
+apastats::describe.r(hypo_c113, type="latex")
+
+apastats::describe.r(hypo_c114, type="latex")
+apastats::describe.r(hypo_c115, type="latex")
+apastats::describe.r(hypo_c116, type="latex")
+apastats::describe.r(hypo_c117, type="latex")
+apastats::describe.r(hypo_c118, type="latex")
+apastats::describe.r(hypo_c119, type="latex")
+
+apastats::describe.r(hypo_c120, type="latex")
+apastats::describe.r(hypo_c121, type="latex")
+apastats::describe.r(hypo_c122, type="latex")
+apastats::describe.r(hypo_c123, type="latex")
+apastats::describe.r(hypo_c124, type="latex")
+apastats::describe.r(hypo_c125, type="latex")
+
+apastats::describe.r(hypo_c126, type="latex")
+apastats::describe.r(hypo_c127, type="latex")
+apastats::describe.r(hypo_c128, type="latex")
+apastats::describe.r(hypo_c129, type="latex")
+apastats::describe.r(hypo_c130, type="latex")
+apastats::describe.r(hypo_c131, type="latex")
+
+apastats::describe.r(hypo_c132, type="latex")
+apastats::describe.r(hypo_c133, type="latex")
+apastats::describe.r(hypo_c134, type="latex")
+apastats::describe.r(hypo_c135, type="latex")
+apastats::describe.r(hypo_c136, type="latex")
+apastats::describe.r(hypo_c137, type="latex")
+```
+
+
 ### Reasons to use Facebook and Action against filter bubbles
 ```{r Reasons to use Facebook and avoidance strategies}
 data %>% select(starts_with("fb_um"), "FBV_Loeschen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren") %>% 
@@ -532,6 +753,24 @@ cor.test(data = corrdata, ~ fb_um_job + FBV_Vielfalt_erzwingen) -> hypo_c43
 cor.test(data = corrdata, ~ fb_um_job + FBV_Explorer) -> hypo_c44
 cor.test(data = corrdata, ~ fb_um_job + FBV_deabonnieren) -> hypo_c45
 
+cor.test(data = corrdata, ~ fb_um_mich_informieren + FBV_Loeschen) -> hypo_c46
+cor.test(data = corrdata, ~ fb_um_mich_informieren + FBV_Incognito) -> hypo_c47
+cor.test(data = corrdata, ~ fb_um_mich_informieren + FBV_Vielfalt_erzwingen) -> hypo_c48
+cor.test(data = corrdata, ~ fb_um_mich_informieren + FBV_Explorer) -> hypo_c49
+cor.test(data = corrdata, ~ fb_um_mich_informieren + FBV_deabonnieren) -> hypo_c50
+
+cor.test(data = corrdata, ~ fb_um_andere_informieren + FBV_Loeschen) -> hypo_c51
+cor.test(data = corrdata, ~ fb_um_andere_informieren + FBV_Incognito) -> hypo_c52
+cor.test(data = corrdata, ~ fb_um_andere_informieren + FBV_Vielfalt_erzwingen) -> hypo_c53
+cor.test(data = corrdata, ~ fb_um_andere_informieren + FBV_Explorer) -> hypo_c54
+cor.test(data = corrdata, ~ fb_um_andere_informieren + FBV_deabonnieren) -> hypo_c55
+
+cor.test(data = corrdata, ~ fb_um_Meinung_zu_äußern + FBV_Loeschen) -> hypo_c56
+cor.test(data = corrdata, ~ fb_um_Meinung_zu_äußern + FBV_Incognito) -> hypo_c57
+cor.test(data = corrdata, ~ fb_um_Meinung_zu_äußern + FBV_Vielfalt_erzwingen) -> hypo_c58
+cor.test(data = corrdata, ~ fb_um_Meinung_zu_äußern + FBV_Explorer) -> hypo_c59
+cor.test(data = corrdata, ~ fb_um_Meinung_zu_äußern + FBV_deabonnieren) -> hypo_c60
+
 apastats::describe.r(hypo_c31, type="latex")
 apastats::describe.r(hypo_c32, type="latex")
 apastats::describe.r(hypo_c33, type="latex")
@@ -550,18 +789,149 @@ apastats::describe.r(hypo_c43, type="latex")
 apastats::describe.r(hypo_c44, type="latex")
 apastats::describe.r(hypo_c45, type="latex")
 
+apastats::describe.r(hypo_c46, type="latex")
+apastats::describe.r(hypo_c47, type="latex")
+apastats::describe.r(hypo_c48, type="latex")
+apastats::describe.r(hypo_c49, type="latex")
+apastats::describe.r(hypo_c50, type="latex")
+
+apastats::describe.r(hypo_c51, type="latex")
+apastats::describe.r(hypo_c52, type="latex")
+apastats::describe.r(hypo_c53, type="latex")
+apastats::describe.r(hypo_c54, type="latex")
+apastats::describe.r(hypo_c55, type="latex")
+
+apastats::describe.r(hypo_c56, type="latex")
+apastats::describe.r(hypo_c57, type="latex")
+apastats::describe.r(hypo_c58, type="latex")
+apastats::describe.r(hypo_c59, type="latex")
+apastats::describe.r(hypo_c60, type="latex")
+
 ```
 
-### wishes regarding facebook
+
+### Personality traits and Action against filter bubbles
+```{r BigFive and avoidance strategies}
+data %>% select("b5_n", "b5_o", "b5_e", "b5_a", "b5_c", "FBV_Loeschen", "FBV_Incognito", "FBV_Vielfalt_erzwingen", "FBV_Explorer", "FBV_deabonnieren") %>% 
+  mutate_if(is.ordered, as.numeric) -> corrdata
+
+cor.test(data = corrdata, ~ b5_e + FBV_Loeschen) -> hypo_c61
+cor.test(data = corrdata, ~ b5_e + FBV_Incognito) -> hypo_c62
+cor.test(data = corrdata, ~ b5_e + FBV_Vielfalt_erzwingen) -> hypo_c63
+cor.test(data = corrdata, ~ b5_e + FBV_Explorer) -> hypo_c64
+cor.test(data = corrdata, ~ b5_e + FBV_deabonnieren) -> hypo_c65
+
+cor.test(data = corrdata, ~ b5_a + FBV_Loeschen) -> hypo_c66
+cor.test(data = corrdata, ~ b5_a + FBV_Incognito) -> hypo_c67
+cor.test(data = corrdata, ~ b5_a + FBV_Vielfalt_erzwingen) -> hypo_c68
+cor.test(data = corrdata, ~ b5_a + FBV_Explorer) -> hypo_c69
+cor.test(data = corrdata, ~ b5_a + FBV_deabonnieren) -> hypo_c70
+
+cor.test(data = corrdata, ~ b5_c + FBV_Loeschen) -> hypo_c71
+cor.test(data = corrdata, ~ b5_c + FBV_Incognito) -> hypo_c72
+cor.test(data = corrdata, ~ b5_c + FBV_Vielfalt_erzwingen) -> hypo_c73
+cor.test(data = corrdata, ~ b5_c + FBV_Explorer) -> hypo_c74
+cor.test(data = corrdata, ~ b5_c + FBV_deabonnieren) -> hypo_c75
+
+cor.test(data = corrdata, ~ b5_n + FBV_Loeschen) -> hypo_c76
+cor.test(data = corrdata, ~ b5_n + FBV_Incognito) -> hypo_c77
+cor.test(data = corrdata, ~ b5_n + FBV_Vielfalt_erzwingen) -> hypo_c78
+cor.test(data = corrdata, ~ b5_n + FBV_Explorer) -> hypo_c79
+cor.test(data = corrdata, ~ b5_n + FBV_deabonnieren) -> hypo_c80
+
+cor.test(data = corrdata, ~ b5_o + FBV_Loeschen) -> hypo_c81
+cor.test(data = corrdata, ~ b5_o + FBV_Incognito) -> hypo_c82
+cor.test(data = corrdata, ~ b5_o + FBV_Vielfalt_erzwingen) -> hypo_c83
+cor.test(data = corrdata, ~ b5_o + FBV_Explorer) -> hypo_c84
+cor.test(data = corrdata, ~ b5_o + FBV_deabonnieren) -> hypo_c85
+
+apastats::describe.r(hypo_c61, type="latex")
+apastats::describe.r(hypo_c62, type="latex")
+apastats::describe.r(hypo_c63, type="latex")
+apastats::describe.r(hypo_c64, type="latex")
+apastats::describe.r(hypo_c65, type="latex")
+
+apastats::describe.r(hypo_c66, type="latex")
+apastats::describe.r(hypo_c67, type="latex")
+apastats::describe.r(hypo_c68, type="latex")
+apastats::describe.r(hypo_c69, type="latex")
+apastats::describe.r(hypo_c70, type="latex")
+
+apastats::describe.r(hypo_c71, type="latex")
+apastats::describe.r(hypo_c72, type="latex")
+apastats::describe.r(hypo_c73, type="latex")
+apastats::describe.r(hypo_c74, type="latex")
+apastats::describe.r(hypo_c75, type="latex")
+
+apastats::describe.r(hypo_c76, type="latex")
+apastats::describe.r(hypo_c77, type="latex")
+apastats::describe.r(hypo_c78, type="latex")
+apastats::describe.r(hypo_c79, type="latex")
+apastats::describe.r(hypo_c80, type="latex")
+
+apastats::describe.r(hypo_c81, type="latex")
+apastats::describe.r(hypo_c82, type="latex")
+apastats::describe.r(hypo_c83, type="latex")
+apastats::describe.r(hypo_c84, type="latex")
+apastats::describe.r(hypo_c85, type="latex")
+
+```
+
+### What influences if someone takes active action?
+```{r Influence of active action}
+data %>% select("b5_n", "b5_o", "b5_e", "b5_a", "b5_c", "FiB_bewusstes_Vorgehen") %>% 
+  mutate_if(is.ordered, as.numeric) -> corrdata
+
+cor.test(data = corrdata, ~ b5_e + FiB_bewusstes_Vorgehen) -> hypo_c86
+cor.test(data = corrdata, ~ b5_o + FiB_bewusstes_Vorgehen) -> hypo_c87
+cor.test(data = corrdata, ~ b5_n + FiB_bewusstes_Vorgehen) -> hypo_c88
+cor.test(data = corrdata, ~ b5_c + FiB_bewusstes_Vorgehen) -> hypo_c89
+cor.test(data = corrdata, ~ b5_a + FiB_bewusstes_Vorgehen) -> hypo_c90
+
+apastats::describe.r(hypo_c86, type="latex")
+apastats::describe.r(hypo_c87, type="latex")
+apastats::describe.r(hypo_c88, type="latex")
+apastats::describe.r(hypo_c89, type="latex")
+apastats::describe.r(hypo_c90, type="latex")
 
 
+data %>% select(starts_with("fb_um"), "FiB_bewusstes_Vorgehen") %>% 
+  mutate_if(is.ordered, as.numeric) -> corrdata
 
-## correlations
+cor.test(data = corrdata, ~ fb_um_friends + FiB_bewusstes_Vorgehen) -> hypo_c91
+cor.test(data = corrdata, ~ fb_um_newfriends + FiB_bewusstes_Vorgehen) -> hypo_c92
+cor.test(data = corrdata, ~ fb_um_job + FiB_bewusstes_Vorgehen) -> hypo_c93
+cor.test(data = corrdata, ~ fb_um_mich_informieren + FiB_bewusstes_Vorgehen) -> hypo_c94
+cor.test(data = corrdata, ~ fb_um_andere_informieren + FiB_bewusstes_Vorgehen) -> hypo_c95
+cor.test(data = corrdata, ~ fb_um_Meinung_zu_äußern + FiB_bewusstes_Vorgehen) -> hypo_c96
 
-### 1
+apastats::describe.r(hypo_c91, type="latex")
+apastats::describe.r(hypo_c92, type="latex")
+apastats::describe.r(hypo_c93, type="latex")
+apastats::describe.r(hypo_c94, type="latex")
+apastats::describe.r(hypo_c95, type="latex")
+apastats::describe.r(hypo_c96, type="latex")
 
+data %>% select(starts_with("FiB_")) %>% 
+  mutate_if(is.ordered, as.numeric) -> corrdata
 
+cor.test(data = corrdata, ~ FiB_schon_gehört + FiB_bewusstes_Vorgehen) -> hypo_c97
+cor.test(data = corrdata, ~ FiB_glaube_existiert + FiB_bewusstes_Vorgehen) -> hypo_c98
+cor.test(data = corrdata, ~ FiB_betrifft_persönlich + FiB_bewusstes_Vorgehen) -> hypo_c99
+cor.test(data = corrdata, ~ FiB_Problem + FiB_bewusstes_Vorgehen) -> hypo_c100
+cor.test(data = corrdata, ~ FiB_interessante_Beiträge + FiB_bewusstes_Vorgehen) -> hypo_c101
 
+apastats::describe.r(hypo_c97, type="latex")
+apastats::describe.r(hypo_c98, type="latex")
+apastats::describe.r(hypo_c99, type="latex")
+apastats::describe.r(hypo_c100, type="latex")
+apastats::describe.r(hypo_c101, type="latex")
+
+AA_table2 <- data %>% select(starts_with("FiB")) %>% mutate_if(is.ordered, as.numeric) %>% apa.cor.table() %>% a_table()
+AA_table3 <- data %>% select(starts_with("FBV_"), "FiB_bewusstes_Vorgehen") %>% mutate_if(is.ordered, as.numeric) %>% apa.cor.table() %>% a_table()
+AA_table4 <- data %>% select("fb_um_friends", "fb_um_newfriends", "fb_um_job", "fb_um_mich_informieren", "fb_um_andere_informieren", "fb_um_Meinung_zu_äußern" ,"FiB_bewusstes_Vorgehen") %>% mutate_if(is.ordered, as.numeric) %>% apa.cor.table() %>% a_table()
+AA_table5 <- data %>% select(starts_with("b5_") ,"FiB_bewusstes_Vorgehen") %>% mutate_if(is.ordered, as.numeric) %>% apa.cor.table() %>% a_table()
+```
 
 
 
