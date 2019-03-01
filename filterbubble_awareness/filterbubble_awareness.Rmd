@@ -236,12 +236,12 @@ plot_data %>%
   aes(x=reorder(variablename, mean), y = 6 - mean, fill = reorder(variablename, mean), 
       ymin = 6 - mean - se * 1.96 , ymax = 6 - mean + se * 1.96) +
   scale_y_continuous(limits = c(0,5), labels = 1:6) +
-  geom_col(width = 0.8) +
+  geom_col(width = 0.7) +
   geom_errorbar(width = 0.3) +
   labs(x="Variables", y="Means of agreement (1-6)", 
        title="Most users know the pheonomenon filter bubble",
        subtitle = "Different measures of filter bubble awareness",
-       caption = "Errorbars denote the 95% confidence intervall of the mean.") +
+       caption = "Errorbars denote the 95% confidence interval of the mean.") +
   guides(fill = FALSE) +
   coord_flip() +
   #scale_fill_brewer(palette = "Spectral") + 
@@ -930,7 +930,26 @@ AA_table4 <- data %>% select("fb_um_friends", "fb_um_newfriends", "fb_um_job", "
 AA_table5 <- data %>% select(starts_with("b5_") ,"FiB_bewusstes_Vorgehen") %>% mutate_if(is.ordered, as.numeric) %>% apa.cor.table() %>% a_table()
 ```
 
+### General willingness to take active action and avoidance strategies?
+```{r action and avoidance strategies}
+data %>% select(starts_with("FBV"), "FiB_bewusstes_Vorgehen") %>% 
+  mutate_if(is.ordered, as.numeric) -> corrdata
 
+cor.test(data = corrdata, ~ FBV_Loeschen + FiB_bewusstes_Vorgehen) -> hypo_c200
+cor.test(data = corrdata, ~ FBV_Incognito + FiB_bewusstes_Vorgehen) -> hypo_c201
+cor.test(data = corrdata, ~ FBV_Vielfalt_erzwingen + FiB_bewusstes_Vorgehen) -> hypo_c202
+cor.test(data = corrdata, ~ FBV_Explorer + FiB_bewusstes_Vorgehen) -> hypo_c203
+cor.test(data = corrdata, ~ FBV_deabonnieren + FiB_bewusstes_Vorgehen) -> hypo_c204
+
+apastats::describe.r(hypo_c200, type="latex")
+apastats::describe.r(hypo_c201, type="latex")
+apastats::describe.r(hypo_c202, type="latex")
+apastats::describe.r(hypo_c203, type="latex")
+apastats::describe.r(hypo_c204, type="latex")
+
+AA_table6 <- data %>% select(starts_with("FBV_") ,"FiB_bewusstes_Vorgehen") %>% mutate_if(is.ordered, as.numeric) %>% apa.cor.table() %>% a_table()
+
+```
 
 
 
