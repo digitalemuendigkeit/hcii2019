@@ -233,8 +233,8 @@ agreement_palette <- colorRampPalette(c(rwthcolors$red,"white", rwthcolors$green
 
 plot_data %>% 
   ggplot() +
-  aes(x=reorder(variablename, mean), y = mean - 1, fill = reorder(variablename, mean), 
-      ymin = mean - 1 - se * 1.96 , ymax = mean - 1 + se * 1.96) +
+  aes(x=reorder(variablename, mean), y = 6 - mean, fill = reorder(variablename, mean), 
+      ymin = 6 - mean - se * 1.96 , ymax = 6 - mean + se * 1.96) +
   scale_y_continuous(limits = c(0,5), labels = 1:6) +
   geom_col(width = 0.8) +
   geom_errorbar(width = 0.3) +
@@ -434,8 +434,8 @@ agreement_palette <- colorRampPalette(c(rwthcolors$red,"white", rwthcolors$green
 
 plot_data %>% 
   ggplot() +
-  aes(x=reorder(variablename, mean), y = mean - 1, fill = reorder(variablename, mean), 
-      ymin = mean - 1 - se * 1.96 , ymax = mean - 1 + se * 1.96) +
+  aes(x=reorder(variablename, mean), y = 6 - mean, fill = reorder(variablename, mean), 
+      ymin = 6 - mean - se * 1.96 , ymax = 6 - mean + se * 1.96) +
   scale_y_continuous(limits = c(0,5), labels = 1:6) +
   geom_col(width = 0.5) +
   geom_errorbar(width = 0.3) +
